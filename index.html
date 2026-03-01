@@ -787,12 +787,16 @@ function calcRoundPoints(top5Lower,entries,raceType){
   Object.entries(entries).forEach(function(kv){
     var pName=kv[0],rider=kv[1].rider,stars=kv[1].stars;
     var pos=top5Lower.indexOf(rider.toLowerCase());
-    var axelBonus=stars!=null?AXEL_BONUS[stars]:0;
-    var base=pos>=0?BASE_POINTS[pos]:0;
-    var danish=pos>=0&&isDanish(rider)?1:0;
+    var inTop5=pos>=0;
+    // Axelgaard: -1 for 5 stjerner gælder ALTID, bonus for 0-2 stjerner kun hvis i top 5
+    var axelBonus=0;
+    if(stars===5) axelBonus=-1;
+    else if(inTop5&&stars!=null) axelBonus=AXEL_BONUS[stars];
+    var base=inTop5?BASE_POINTS[pos]:0;
+    var danish=inTop5&&isDanish(rider)?1:0;
     var multi=isDouble?2:1;
     var points=(base+axelBonus+danish)*multi;
-    var parts=[pos>=0?"Grundpoint: "+base:"Ikke i top 5"];
+    var parts=[inTop5?"Grundpoint: "+base:"Ikke i top 5"];
     if(axelBonus!==0) parts.push("Axelgaard ("+stars+"⭐): "+(axelBonus>0?"+":"")+axelBonus);
     if(danish) parts.push("🇩🇰 +1");
     if(isDouble&&points!==0) parts.push("⚡ ×2");
