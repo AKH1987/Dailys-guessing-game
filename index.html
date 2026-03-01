@@ -661,7 +661,7 @@ var playerAC=setupAutocomplete($("search-input"),$("suggestions"),{
 });
 $("search-input").addEventListener("input",function(){ selectedRider=null; });
 
-$("confirm-btn").addEventListener("click",function(){
+function handleConfirm(){
   var err=$("error-msg");
   selectedRider=playerAC.getValue();
   if(!selectedRider){ err.textContent="⚠️ Vælg en rytter fra listen først."; return; }
@@ -683,7 +683,9 @@ $("confirm-btn").addEventListener("click",function(){
   }
   selectedRider=null; err.textContent="";
   saveState(); renderPicksList(); renderOrder(); renderPickBox();
-});
+}
+
+$("confirm-btn").addEventListener("click", handleConfirm);
 
 function startEdit(playerName){
   if(!isLastPicked(playerName)||state.picksLocked) return;
@@ -783,6 +785,9 @@ $("calc-btn").addEventListener("click",function(){
   recalcTotalPoints();
   state.players.sort(function(a,b){ return b.points-a.points; });
   renderStandings();
+  renderMiniStandings();
+  renderLimitsTable();
+  renderLimitsStandings();
 });
 
 // === NÆSTE RUNDE ===
@@ -890,7 +895,27 @@ function recalcHistoryRound(rNum){
 
 // === RENDER ===
 function renderAll(){
-  updateRaceDisplay(); renderOrder(); renderPickBox(); renderPicksList(); renderStandings(); renderMiniStandings(); updateProgressBar();
+  updateRaceDisplay();
+  renderOrder();
+  renderPickBox();
+  renderPicksList();
+  renderStandings();
+  renderMiniStandings();
+  updateProgressBar();
+  // Opdater GM-fanen hvis den er aktiv
+  if($("tab-gm").classList.contains("active") && isGM){
+    renderStarTable();
+    renderLimitsTable();
+    renderHistory();
+  }
+  // Opdater stilling-fanen hvis den er aktiv
+  if($("tab-standings").classList.contains("active")){
+    renderLimitsStandings();
+  }
+  // Opdater kalender hvis den er aktiv
+  if($("tab-calendar").classList.contains("active")){
+    renderCalendar();
+  }
 }
 
 function renderMiniStandings(){
@@ -970,6 +995,27 @@ function renderPickBox(){
   if(state.currentPickIndex>=state.players.length){
     box.innerHTML='<p style="color:var(--success);font-weight:700;font-size:1rem">✅ Alle har valgt rytter!</p>'; return;
   }
+  if(!roundOrder.length) return;
+  // Rebuild pick box HTML if it was replaced
+  if(!$("active-name")){
+    box.innerHTML='<div class="turn-label">Det er <span class="turn-name" id="active-name"></span>\'s tur!</div>'+
+      '<div class="ac-wrap"><input type="text" id="search-input" placeholder="Søg efter rytter..." autocomplete="off"><ul class="ac-list" id="suggestions" style="display:none"></ul></div>'+
+      '<button class="btn" id="confirm-btn">✅ Bekræft valg</button><p class="error" id="error-msg"></p>';
+    // Re-bind autocomplete and confirm button
+    playerAC = setupAutocomplete($("search-input"),$("suggestions"),{
+      takenCheck:function(r){ return Object.entries(state.picks).some(function(e){ return e[1]===r&&e[0]!==editingPlayer; }); },
+      blockedCheck:function(r){
+        if(!state.players||!roundOrder.length) return false;
+        var pName=editingPlayer||(state.currentPickIndex<state.players.length?activePlayer().name:null);
+        if(!pName||!isTop8(r)) return false;
+        if(top8UsedCount(pName)>=4) return true;
+        return (state.seasonHistory[pName]||[]).some(function(e){ return e.rider.toLowerCase()===r.toLowerCase(); });
+      },
+      onSelect:function(name){ selectedRider=name; }
+    });
+    $("search-input").addEventListener("input",function(){ selectedRider=null; });
+    $("confirm-btn").addEventListener("click", handleConfirm);
+  }
   $("active-name").textContent=activePlayer().name;
   $("confirm-btn").textContent="✅ Bekræft valg";
   playerAC.clear(); $("error-msg").textContent="";
@@ -1011,7 +1057,9 @@ function setStars(playerName,val){
   var stars=val===""?null:parseInt(val);
   if(stars===5&&fiveStarUsedCount(playerName)>=5){ alert("⛔ "+playerName+" har allerede brugt 5-stjerne 5 gange."); renderStarTable(); return; }
   state.starRatings[playerName]=stars;
-  saveState(); renderLimitsTable();
+  saveState();
+  renderLimitsTable();
+  renderLimitsStandings();
 }
 
 // === START ===
