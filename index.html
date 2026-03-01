@@ -897,9 +897,9 @@ function recalcTotalPoints(){
 
 // === RESOLVE PENDING – called from GM pending section ===
 function resolvePendingRound(rNum){
-  var top5inputs=document.querySelectorAll('.pending-top5-input[data-round="'+rNum+'"]');
+  var acs=pendingAcFields[rNum];
+  var newTop5=acs ? acs.map(function(ac){ return (ac.getValue()||"").toLowerCase(); }) : [];
   var starInputs=document.querySelectorAll('.pending-star-input[data-round="'+rNum+'"]');
-  var newTop5=Array.from(top5inputs).map(function(i){ return i.value.trim().toLowerCase(); });
   var round=state.roundLog[rNum];
 
   var baseEntries={};
@@ -936,6 +936,9 @@ function resolvePendingRound(rNum){
 }
 
 // === GM PENDING PANEL ===
+// Store AC instances for pending panels keyed by rNum
+var pendingAcFields = {};
+
 function renderGmPending(){
   var pending=pendingRounds();
   var section=$("gm-pending-section");
@@ -945,13 +948,7 @@ function renderGmPending(){
   list.innerHTML=pending.map(function(rNum){
     var r=state.roundLog[rNum];
     var tl={normal:"",monument:"🏛️ ",grandtour:"🏔️ "}[r.raceType]||"";
-    var starOpts='<option value="">– Ikke tildelt –</option>'+
-      '<option value="5">⭐⭐⭐⭐⭐ (−1)</option>'+
-      '<option value="4">⭐⭐⭐⭐ (0)</option>'+
-      '<option value="3">⭐⭐⭐ (0)</option>'+
-      '<option value="2">⭐⭐ (+1)</option>'+
-      '<option value="1">⭐ (+2)</option>'+
-      '<option value="0">Ikke nævnt (+3)</option>';
+    var posLabels=["🥇","🥈","🥉","4.","5."];
     return '<div class="pending-result-item">'+
       '<h4>'+tl+r.raceName+' <span style="font-size:0.8rem;color:var(--muted)">(Runde '+rNum+')</span></h4>'+
       '<p style="font-size:0.84rem;color:var(--muted);margin-bottom:10px">'+
@@ -960,9 +957,14 @@ function renderGmPending(){
       '<button class="btn pending small" onclick="togglePendingResolve('+rNum+')">🕐 Udfyld resultat</button>'+
       '<div class="pending-resolve-panel" id="pending-panel-'+rNum+'">'+
         '<p style="font-size:0.84rem;font-weight:600;color:var(--pending);margin-bottom:10px">Top 5 for '+r.raceName+'</p>'+
-        [1,2,3,4,5].map(function(i){
-          return '<div class="result-row"><label>'+["🥇","🥈","🥉","4.","5."][i-1]+'</label>'+
-            '<input class="pending-top5-input" data-round="'+rNum+'" data-pos="'+(i-1)+'" placeholder="Rytternavn" style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem"></div>';
+        [0,1,2,3,4].map(function(i){
+          return '<div class="result-row">'+
+            '<label>'+posLabels[i]+'</label>'+
+            '<div class="ac-wrap" id="pending-ac-wrap-'+rNum+'-'+i+'" style="flex:1;margin-bottom:0">'+
+              '<input id="pending-ac-input-'+rNum+'-'+i+'" placeholder="Søg rytter..." autocomplete="off">'+
+              '<ul class="ac-list" id="pending-ac-list-'+rNum+'-'+i+'" style="display:none"></ul>'+
+            '</div>'+
+          '</div>';
         }).join("")+
         '<p style="font-size:0.84rem;font-weight:600;color:var(--pending);margin:12px 0 8px">Stjerner per spiller</p>'+
         Object.entries(r.entries).map(function(kv){
@@ -970,36 +972,33 @@ function renderGmPending(){
           return '<div class="result-row" style="margin-bottom:6px">'+
             '<label style="padding-top:6px">'+pName+'</label>'+
             '<select class="pending-star-input" data-round="'+rNum+'" data-player="'+pName+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem">'+
-            starOpts.replace('value="'+(e.stars==null?"":e.stars)+'"','value="'+(e.stars==null?"":e.stars)+'" selected')+
+            '<option value="" '+(e.stars==null?"selected":"")+'>– Ikke tildelt –</option>'+
+            '<option value="5" '+(e.stars===5?"selected":"")+'>⭐⭐⭐⭐⭐ (−1)</option>'+
+            '<option value="4" '+(e.stars===4?"selected":"")+'>⭐⭐⭐⭐ (0)</option>'+
+            '<option value="3" '+(e.stars===3?"selected":"")+'>⭐⭐⭐ (0)</option>'+
+            '<option value="2" '+(e.stars===2?"selected":"")+'>⭐⭐ (+1)</option>'+
+            '<option value="1" '+(e.stars===1?"selected":"")+'>⭐ (+2)</option>'+
+            '<option value="0" '+(e.stars===0?"selected":"")+'>Ikke nævnt (+3)</option>'+
             '</select></div>';
         }).join("")+
         '<button class="btn pending" style="margin-top:10px" onclick="resolvePendingRound('+rNum+')">✅ Bekræft resultat & beregn point</button>'+
       '</div>'+
     '</div>';
   }).join("");
+
+  // Bind autocomplete AFTER HTML is in DOM
+  pending.forEach(function(rNum){
+    pendingAcFields[rNum] = [0,1,2,3,4].map(function(i){
+      var inp = $("pending-ac-input-"+rNum+"-"+i);
+      var ul  = $("pending-ac-list-"+rNum+"-"+i);
+      return setupAutocomplete(inp, ul, {});
+    });
+  });
 }
 
 function togglePendingResolve(rNum){
   var panel=$("pending-panel-"+rNum);
-  if(!panel) return;
-  var wasOpen=panel.classList.contains("open");
-  panel.classList.toggle("open");
-  if(!wasOpen){
-    // Bind autocomplete to each top-5 input when panel opens
-    panel.querySelectorAll('.pending-top5-input').forEach(function(inp){
-      if(inp.dataset.acBound) return;
-      inp.dataset.acBound="1";
-      // Create a dropdown list element
-      var ul=document.createElement("ul");
-      ul.className="ac-list";
-      ul.style.display="none";
-      inp.parentNode.style.position="relative";
-      inp.parentNode.appendChild(ul);
-      // Wrap input in ac-wrap styling
-      inp.style.borderRadius="16px";
-      setupAutocomplete(inp, ul, {});
-    });
-  }
+  if(panel) panel.classList.toggle("open");
 }
 
 // === HISTORIK (read-only for pending, editable for done) ===
