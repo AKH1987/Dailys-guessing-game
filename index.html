@@ -537,10 +537,14 @@ function top8UsedCount(n){ return (state.seasonHistory[n]||[]).filter(function(e
 function fiveStarUsedCount(n){ return (state.seasonHistory[n]||[]).filter(function(e){ return e.stars===5; }).length; }
 function currentRace(){ return RACES[state.currentRound-1]||{name:"–",type:"normal",date:"–"}; }
 
+var PLAYERS_ORDER = ["Emil","Christian","Dennis","Mathias","Anders","Tobias"];
+
 function buildRoundOrder(){
-  if(!state.players||!state.players.length) return;
-  var si=(state.currentRound-1)%state.players.length;
-  roundOrder=state.players.map(function(_,i){ return state.players[(si+i)%state.players.length]; });
+  var si=(state.currentRound-1)%PLAYERS_ORDER.length;
+  roundOrder=PLAYERS_ORDER.map(function(_,i){
+    var name=PLAYERS_ORDER[(si+i)%PLAYERS_ORDER.length];
+    return state.players.find(function(p){ return p.name===name; })||{name:name,points:0};
+  });
 }
 function activePlayer(){ return roundOrder[state.currentPickIndex]; }
 function isLastPicked(n){ return state.currentPickIndex>0&&roundOrder[state.currentPickIndex-1]&&roundOrder[state.currentPickIndex-1].name===n; }
