@@ -18,11 +18,12 @@
       --text:      #1A1A2E;
       --muted:     #6B7280;
       --border:    #E0EAE4;
+      --pending:   #7B2FBE;
+      --pending-bg:#F3E8FF;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); padding: 12px; }
 
-    /* HEADER */
     .app-header { background: var(--primary-dark); color: white; border-radius: 16px; padding: 16px 20px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
     .app-header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.3px; }
     .app-header .subtitle { font-size: 0.78rem; color: var(--primary-light); margin-top: 2px; }
@@ -31,47 +32,24 @@
     .prog-bar-wrap { background: rgba(255,255,255,0.15); border-radius: 10px; height: 6px; width: 120px; }
     .prog-bar { background: var(--accent); border-radius: 10px; height: 6px; transition: width 0.5s; }
 
-    /* STATUS */
     .status-bar { display: flex; align-items: center; gap: 8px; background: var(--primary-dark); color: white; border-radius: 10px; padding: 7px 14px; margin-bottom: 12px; font-size: 0.8rem; }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
     .status-dot.offline { background: var(--danger); }
     .status-dot.syncing { background: var(--accent); animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    /* TABS */
     .tabs { display: flex; gap: 4px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 2px; }
     .tab { flex: 1; min-width: 56px; padding: 9px 4px; text-align: center; border-radius: 10px; cursor: pointer; font-weight: 600; background: var(--card); color: var(--muted); font-size: 0.75rem; border: 1.5px solid var(--border); white-space: nowrap; transition: all 0.15s; }
     .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* CARDS */
     section { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--border); }
     section h2 { font-size: 1rem; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); color: var(--primary-dark); display: flex; align-items: center; gap: 6px; }
-    .app-header { border-radius: 16px; }
-    .status-bar { border-radius: 16px; }
-    .pick-box { border-radius: 16px; }
-    .info-box { border-radius: 16px; }
-    .player-chip { border-radius: 16px; }
-    .gm-panel { border-radius: 16px; }
-    .gm-header-bar { border-radius: 16px; }
-    .history-round { border-radius: 16px; }
-    .countdown-box { border-radius: 16px; }
-    .race-item { border-radius: 16px; }
-    .gm-login-box { border-radius: 20px; }
-    .ac-list { border-radius: 16px; }
-    .ac-wrap input { border-radius: 16px; }
-    .btn { border-radius: 16px; }
-    .btn.small { border-radius: 10px; }
-    table { border-radius: 16px; overflow: hidden; }
-    th:first-child { border-top-left-radius: 0; }
-    th:last-child { border-top-right-radius: 0; }
 
-    /* TABLES */
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; border-radius: 16px; overflow: hidden; }
     th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; word-wrap: break-word; font-size: 0.88rem; }
     th { background: var(--primary); color: white; font-size: 0.82rem; font-weight: 600; }
-    th:first-child { border-radius: 0; }
     .star-table td:first-child, .star-table th:first-child { width: 18%; }
     .star-table td:nth-child(2), .star-table th:nth-child(2) { width: 24%; }
     .star-table td:nth-child(3), .star-table th:nth-child(3) { width: 38%; }
@@ -79,13 +57,11 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #F0F7F3; }
 
-    /* INFO GRID */
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .info-box { background: var(--bg); border-radius: 10px; padding: 12px; border: 1px solid var(--border); }
     .info-box span { display: block; font-size: 0.72rem; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
     .info-box strong { font-size: 0.95rem; color: var(--primary-dark); }
 
-    /* STANDINGS SPECIAL */
     .standings-row td:first-child { font-size: 1.1rem; width: 40px; }
     .standings-row.gold td { background: #FFFBEB; }
     .standings-row.silver td { background: #F8FAFC; }
@@ -93,22 +69,19 @@
     .points-pill { display: inline-block; background: var(--primary); color: white; border-radius: 20px; padding: 2px 10px; font-weight: 700; font-size: 0.88rem; }
     .points-diff { font-size: 0.75rem; color: var(--muted); margin-left: 6px; }
 
-    /* PLAYER CHIPS */
     .order-list { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
     .player-chip { background: var(--primary-dark); color: white; border-radius: 20px; padding: 6px 14px; font-size: 0.84rem; font-weight: 500; transition: all 0.2s; }
     .player-chip.active { background: var(--accent); color: var(--primary-dark); font-weight: 700; box-shadow: 0 2px 8px rgba(232,184,0,0.4); }
     .player-chip.done { background: var(--border); color: var(--muted); text-decoration: line-through; }
 
-    /* PICK BOX */
     .pick-box { background: var(--bg); border-radius: 12px; padding: 16px; margin-top: 10px; border: 1.5px solid var(--primary-light); }
     .pick-box .turn-label { font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; font-size: 1rem; }
     .turn-name { color: var(--primary); }
 
-    /* BUTTONS */
-    .btn { background: var(--primary); color: white; border: none; padding: 11px 20px; border-radius: 10px; font-size: 0.92rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; transition: all 0.15s; }
+    .btn { background: var(--primary); color: white; border: none; padding: 11px 20px; border-radius: 16px; font-size: 0.92rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; transition: all 0.15s; }
     .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .btn:active { transform: translateY(0); }
-    .btn.small { padding: 5px 12px; font-size: 0.8rem; width: auto; margin-top: 0; border-radius: 7px; }
+    .btn.small { padding: 5px 12px; font-size: 0.8rem; width: auto; margin-top: 0; border-radius: 10px; }
     .btn.edit { background: var(--border); color: var(--text); }
     .btn.edit:hover { background: #ccc; }
     .btn.danger { background: var(--danger); }
@@ -117,25 +90,24 @@
     .btn.success:hover { background: #2ecc71; }
     .btn.warning { background: #E67E22; }
     .btn.secondary { background: var(--muted); }
+    .btn.pending { background: var(--pending); }
+    .btn.pending:hover { background: #6a1fa8; }
 
-    /* ERRORS */
     .error { color: var(--danger); font-size: 0.86rem; margin-top: 6px; }
     .star-hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
 
-    /* AUTOCOMPLETE */
     .ac-wrap { position: relative; margin-bottom: 10px; }
-    .ac-wrap input { width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 0.95rem; transition: border-color 0.15s; }
+    .ac-wrap input { width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 16px; font-size: 0.95rem; transition: border-color 0.15s; }
     .ac-wrap input:focus { outline: none; border-color: var(--primary-light); }
     .ac-wrap input.selected { border-color: var(--success); background: #F0FFF4; }
-    .ac-list { position: absolute; z-index: 10; width: 100%; background: white; border: 1.5px solid var(--border); border-radius: 10px; max-height: 200px; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .ac-list { position: absolute; z-index: 10; width: 100%; background: white; border: 1.5px solid var(--border); border-radius: 16px; max-height: 200px; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
     .ac-list li { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); list-style: none; font-size: 0.9rem; }
     .ac-list li:last-child { border-bottom: none; }
     .ac-list li:hover { background: #F0F7F3; }
     .ac-list li.taken { color: #bbb; cursor: not-allowed; font-style: italic; }
     .ac-list li.blocked { color: var(--danger); cursor: not-allowed; font-style: italic; }
 
-    /* GM PANEL */
-    .gm-panel { background: var(--accent-bg); border: 2px solid var(--accent); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .gm-panel { background: var(--accent-bg); border: 2px solid var(--accent); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
     .gm-panel h3 { margin-bottom: 14px; color: var(--primary-dark); font-size: 1rem; }
     .result-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
     .result-row label { width: 70px; font-weight: 600; font-size: 0.84rem; padding-top: 11px; flex-shrink: 0; color: var(--muted); }
@@ -147,8 +119,7 @@
     .point-log li.plus { background: #F0FFF4; color: #1A5C35; border-left: 3px solid var(--success); }
     .point-log li.zero { background: var(--bg); color: var(--muted); border-left: 3px solid var(--border); }
 
-    /* COUNTDOWN */
-    .countdown-box { border-radius: 12px; padding: 16px; text-align: center; margin-top: 12px; }
+    .countdown-box { border-radius: 16px; padding: 16px; text-align: center; margin-top: 12px; }
     .countdown-box.active { background: var(--accent-bg); border: 2px solid var(--accent); }
     .countdown-box.locked { background: #FDECEA; border: 2px solid var(--danger); }
     .countdown-timer { font-size: 2.4rem; font-weight: 800; letter-spacing: 3px; margin: 6px 0; font-variant-numeric: tabular-nums; }
@@ -156,21 +127,34 @@
     .countdown-box.locked .countdown-timer { color: var(--danger); }
     .countdown-label { font-size: 0.82rem; color: var(--muted); }
 
-    /* ROUND BADGE */
     .round-badge { display: inline-block; background: var(--primary); color: white; border-radius: 20px; padding: 4px 14px; font-size: 0.82rem; font-weight: 600; margin-bottom: 12px; }
 
-    /* HISTORY */
-    .history-round { border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    /* PENDING BANNER */
+    .pending-banner { background: var(--pending-bg); border: 2px solid var(--pending); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+    .pending-banner-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .pending-banner-text { flex: 1; }
+    .pending-banner-text strong { color: var(--pending); display: block; font-size: 0.95rem; margin-bottom: 2px; }
+    .pending-banner-text span { font-size: 0.82rem; color: var(--muted); }
+    .pending-count { background: var(--pending); color: white; border-radius: 20px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; }
+
+    .history-round { border: 1.5px solid var(--border); border-radius: 16px; margin-bottom: 10px; overflow: hidden; }
+    .history-round.pending-round { border-color: var(--pending); }
     .history-round-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg); cursor: pointer; }
+    .history-round.pending-round .history-round-header { background: var(--pending-bg); }
     .history-round-header:hover { background: #E8F2EC; }
+    .history-round.pending-round .history-round-header:hover { background: #ead9f8; }
     .history-round-body { display: none; padding: 16px; border-top: 1px solid var(--border); }
     .history-round-body.open { display: block; }
     .history-edit-panel { background: var(--accent-bg); border: 2px solid var(--accent); border-radius: 10px; padding: 14px; margin-top: 12px; display: none; }
     .history-edit-panel.open { display: block; }
 
-    /* CALENDAR */
-    .race-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; background: var(--card); border: 1.5px solid var(--border); transition: all 0.2s; }
+    .status-badge { display: inline-block; border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; font-weight: 700; }
+    .status-badge.pending { background: var(--pending-bg); color: var(--pending); border: 1px solid var(--pending); }
+    .status-badge.done { background: #EAFBEA; color: var(--success); border: 1px solid var(--success); }
+
+    .race-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 16px; margin-bottom: 6px; background: var(--card); border: 1.5px solid var(--border); }
     .race-item.completed { opacity: 0.3; background: var(--bg); }
+    .race-item.pending-race { border-color: var(--pending); background: var(--pending-bg); opacity: 1; }
     .race-item.current { border: 2px solid var(--accent); background: var(--accent-bg); }
     .race-num { font-size: 0.72rem; color: var(--muted); width: 22px; flex-shrink: 0; text-align: right; }
     .race-date { font-size: 0.75rem; color: var(--muted); width: 65px; flex-shrink: 0; }
@@ -181,8 +165,8 @@
     .badge-grandtour { background: #EAF4FF; color: #1A6AAD; }
     .badge-normal    { background: var(--bg); color: var(--muted); }
     .badge-done      { background: #EAFBEA; color: var(--success); }
+    .badge-pending   { background: var(--pending-bg); color: var(--pending); }
 
-    /* GM LOGIN */
     .gm-login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
     .gm-login-box { background: white; border-radius: 20px; padding: 32px 28px; width: 90%; max-width: 340px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
     .gm-login-box h2 { margin-bottom: 6px; color: var(--primary-dark); font-size: 1.3rem; }
@@ -190,13 +174,17 @@
     .gm-login-box input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 1.1rem; margin-bottom: 10px; text-align: center; letter-spacing: 3px; }
     .gm-login-box input:focus { outline: none; border-color: var(--primary-light); }
 
-    /* GM HEADER BAR */
-    .gm-header-bar { background: #FDECEA; border: 2px solid var(--danger); border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
-
-    /* LAST PICK HIGHLIGHT */
+    .gm-header-bar { background: #FDECEA; border: 2px solid var(--danger); border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
     .last-pick-row td { background: #F0F7F3; }
 
-    /* MOBILE */
+    /* PENDING RESULT PANEL in GM */
+    .pending-result-section { background: var(--pending-bg); border: 2px solid var(--pending); border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+    .pending-result-section h3 { color: var(--pending); margin-bottom: 12px; font-size: 0.95rem; }
+    .pending-result-item { background: white; border-radius: 10px; padding: 14px; margin-bottom: 10px; border: 1px solid #d4b0f0; }
+    .pending-result-item h4 { font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark); }
+    .pending-resolve-panel { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #d4b0f0; }
+    .pending-resolve-panel.open { display: block; }
+
     @media (max-width: 480px) {
       body { padding: 8px; }
       .app-header h1 { font-size: 1.1rem; }
@@ -251,6 +239,14 @@
 
 <!-- SPILLERFANE -->
 <div class="tab-content active" id="tab-player">
+  <div id="pending-banner" style="display:none" class="pending-banner">
+    <div class="pending-banner-icon">🕐</div>
+    <div class="pending-banner-text">
+      <strong>Afventer løbsresultat</strong>
+      <span id="pending-banner-names"></span>
+    </div>
+    <div class="pending-count" id="pending-count-badge">0</div>
+  </div>
   <section>
     <h2>🏆 Stilling</h2>
     <table>
@@ -298,6 +294,7 @@
 <div class="tab-content" id="tab-standings">
   <section>
     <h2>🏆 Sæsonstilling</h2>
+    <p class="star-hint" id="standings-pending-note" style="display:none;color:var(--pending)">🕐 Point fra afventende runder er ikke medregnet endnu.</p>
     <table>
       <thead><tr><th style="width:40px">#</th><th>Spiller</th><th style="width:120px">Point</th></tr></thead>
       <tbody id="standings-body-full"></tbody>
@@ -313,7 +310,7 @@
   </section>
 </div>
 
-<!-- STATS FANE -->
+<!-- STATS -->
 <div class="tab-content" id="tab-stats">
   <section>
     <h2>📈 Pointudvikling</h2>
@@ -337,7 +334,7 @@
 <div class="tab-content" id="tab-calendar">
   <section>
     <h2>📆 Løbskalender 2026</h2>
-    <p class="star-hint">Afsluttede løb fades ud. Aktuelle løb markeret med gult.</p>
+    <p class="star-hint">Afsluttede løb fades ud. 🕐 = afventer resultat.</p>
     <div id="calendar-list"></div>
   </section>
 </div>
@@ -406,6 +403,16 @@
     <strong style="color:var(--danger)">GM-tilstand aktiv</strong>
     <button class="btn danger small" style="margin-left:auto;margin-top:0" onclick="gmLogout()">Log ud</button>
   </div>
+
+  <!-- AFVENTENDE RESULTATER -->
+  <div id="gm-pending-section" style="display:none">
+    <div class="pending-result-section">
+      <h3>🕐 Afventende resultater</h3>
+      <p style="font-size:0.84rem;color:var(--muted);margin-bottom:14px">Udfyld top 5 og stjerner, og beregn point direkte her.</p>
+      <div id="gm-pending-list"></div>
+    </div>
+  </div>
+
   <section>
     <h2>📅 Løbsinfo</h2>
     <div id="gm-race-info" style="background:var(--bg);border-radius:10px;padding:14px;font-size:0.92rem;line-height:1.9">Indlæser…</div>
@@ -445,10 +452,11 @@
     <h2>➡️ Næste runde</h2>
     <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px">Afslut runden når point er beregnet og bekræftet.</p>
     <button class="btn success" id="next-round-btn">🏁 Afslut runde & start næste</button>
+    <button class="btn pending" id="pending-round-btn" style="margin-top:8px">🕐 Gem som "Afventer resultat" & start næste</button>
   </section>
   <section>
     <h2>📜 Rundehistorik</h2>
-    <p class="star-hint">Klik på en runde for detaljer eller rettelse.</p>
+    <p class="star-hint">Klik på en runde for detaljer. 🕐 = afventer resultat.</p>
     <div id="history-list"><p style="color:var(--muted)">Ingen afsluttede runder endnu.</p></div>
   </section>
 </div>
@@ -458,7 +466,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <script>
-// === FIREBASE ===
 const firebaseConfig = {
   apiKey: "AIzaSyCYxN2e6DZVRDLMfNYM3uRBc7bsnKZdbrA",
   authDomain: "dennis-cykelspil.firebaseapp.com",
@@ -471,7 +478,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var db = firebase.database();
 
-// === KONSTANTER ===
 var GM_CODE = "Akh1987akh";
 
 var RACES = [
@@ -542,7 +548,6 @@ var typeLabel   = {normal:"Normalt løb",monument:"🏛️ Monument",grandtour:"
 var typeBadge   = {normal:"badge-normal",monument:"badge-monument",grandtour:"badge-grandtour"};
 var typeBadgeLabel = {normal:"Normalt",monument:"🏛️ Monument",grandtour:"🏔️ Grand Tour"};
 
-// === STATE ===
 var state = {
   currentRound:1, currentPickIndex:0,
   picks:{}, starRatings:{}, picksLocked:false, lockTimestamp:null,
@@ -555,9 +560,22 @@ var countdownInterval=null, isGM=false;
 function $(id){ return document.getElementById(id); }
 function isTop8(r){ return TOP8.some(function(t){ return t.toLowerCase()===r.toLowerCase(); }); }
 function isDanish(r){ return danishRiders.some(function(d){ return d.toLowerCase()===r.toLowerCase(); }); }
-function top8UsedCount(n){ return (state.seasonHistory[n]||[]).filter(function(e){ return isTop8(e.rider); }).length; }
-function fiveStarUsedCount(n){ return (state.seasonHistory[n]||[]).filter(function(e){ return e.stars===5; }).length; }
+
+// Limits count ALL history entries including pending rounds
+function top8UsedCount(n){
+  return (state.seasonHistory[n]||[]).filter(function(e){ return isTop8(e.rider); }).length;
+}
+function fiveStarUsedCount(n){
+  return (state.seasonHistory[n]||[]).filter(function(e){ return e.stars===5; }).length;
+}
+
 function currentRace(){ return RACES[state.currentRound-1]||{name:"–",type:"normal",date:"–"}; }
+
+function pendingRounds(){
+  return Object.keys(state.roundLog)
+    .filter(function(k){ return k!=="preview" && state.roundLog[k].pending; })
+    .map(Number).sort(function(a,b){ return a-b; });
+}
 
 var PLAYERS_ORDER = ["Emil","Christian","Dennis","Mathias","Anders","Tobias"];
 
@@ -571,14 +589,12 @@ function buildRoundOrder(){
 function activePlayer(){ return roundOrder[state.currentPickIndex]; }
 function isLastPicked(n){ return state.currentPickIndex>0&&roundOrder[state.currentPickIndex-1]&&roundOrder[state.currentPickIndex-1].name===n; }
 
-// === STATUS ===
 function setStatus(mode,text){
   var dot=$("status-dot"),bar=$("status-text"); if(!dot||!bar) return;
   dot.className="status-dot"+(mode==="online"?"":mode==="offline"?" offline":" syncing");
   bar.textContent=text;
 }
 
-// === FIREBASE ===
 function saveState(){
   setStatus("syncing","Gemmer…");
   db.ref("gameState").set(JSON.parse(JSON.stringify(state)))
@@ -614,7 +630,6 @@ function restoreCountdown(){
   tickCountdown(state.lockTimestamp);
 }
 
-// === GM ===
 function verifyGmCode(){
   if($("gm-code-input").value!==GM_CODE){ $("gm-login-error").textContent="⛔ Forkert kode!"; return; }
   $("gm-overlay").style.display="none"; isGM=true; renderGmTab();
@@ -622,7 +637,6 @@ function verifyGmCode(){
 function closeGmOverlay(){ $("gm-overlay").style.display="none"; switchTab("player"); }
 function gmLogout(){ isGM=false; switchTab("player"); }
 
-// === TABS ===
 function switchTab(tab){
   document.querySelectorAll(".tab-content").forEach(function(el){ el.classList.remove("active"); });
   document.querySelectorAll(".tab").forEach(function(el){ el.classList.remove("active"); });
@@ -637,9 +651,8 @@ function switchTab(tab){
   if(tab==="calendar"){ renderCalendar(); }
   if(tab==="stats"){ renderStats(); }
 }
-function renderGmTab(){ updateRaceDisplay(); renderStarTable(); renderLimitsTable(); renderHistory(); }
+function renderGmTab(){ updateRaceDisplay(); renderStarTable(); renderLimitsTable(); renderHistory(); renderGmPending(); }
 
-// === AUTOCOMPLETE ===
 function setupAutocomplete(input,ulEl,opts){
   opts=opts||{}; var chosen=null;
   input.addEventListener("input",function(){ chosen=null; input.classList.remove("selected"); showList(input.value.trim()); });
@@ -674,7 +687,6 @@ function setupAutocomplete(input,ulEl,opts){
   };
 }
 
-// === SPILLERVALG ===
 var playerAC=setupAutocomplete($("search-input"),$("suggestions"),{
   takenCheck:function(r){ return Object.entries(state.picks).some(function(e){ return e[1]===r&&e[0]!==editingPlayer; }); },
   blockedCheck:function(r){
@@ -724,7 +736,6 @@ function startEdit(playerName){
   $("pick-box").scrollIntoView({behavior:"smooth"});
 }
 
-// === COUNTDOWN ===
 function startCountdown(){
   var lt=Date.now()+15*60*1000; state.lockTimestamp=lt; tickCountdown(lt);
 }
@@ -745,7 +756,6 @@ function tickCountdown(lt){
   },1000);
 }
 
-// === GM OVERRIDE ===
 function startGmOverride(playerName){
   var existing=$("override-"+playerName);
   if(existing){ existing.classList.toggle("open"); return; }
@@ -766,7 +776,6 @@ function confirmGmOverride(playerName){
   saveState(); renderPicksList(); renderStarTable();
 }
 
-// === POINT ===
 var gmFields=["p1","p2","p3","p4","p5"].map(function(id){
   var wrap=$("wrap-"+id);
   return setupAutocomplete(wrap.querySelector("input"),wrap.querySelector(".ac-list"));
@@ -811,23 +820,62 @@ $("calc-btn").addEventListener("click",function(){
   });
   recalcTotalPoints();
   state.players.sort(function(a,b){ return b.points-a.points; });
-  renderStandings();
-  renderMiniStandings();
-  renderLimitsTable();
-  renderLimitsStandings();
+  renderStandings(); renderMiniStandings(); renderLimitsTable(); renderLimitsStandings();
 });
 
-// === NÆSTE RUNDE ===
 $("next-round-btn").addEventListener("click",function(){
   var r=currentRace();
   if(!confirm("Afslut runde "+state.currentRound+" ("+r.name+") og start runde "+(state.currentRound+1)+"?")) return;
+  finalizeRound(state.currentRound, false);
+});
+
+$("pending-round-btn").addEventListener("click",function(){
+  var r=currentRace();
+  if(!confirm('Gem runde '+state.currentRound+' ('+r.name+') som "Afventer resultat" og start runde '+(state.currentRound+1)+'?')) return;
+  finalizeRound(state.currentRound, true);
+});
+
+function finalizeRound(rNum, isPending){
+  var r=currentRace();
   var preview=state.roundLog["preview"];
-  if(preview){ state.roundLog[state.currentRound]=preview; delete state.roundLog["preview"]; }
-  else{ state.roundLog[state.currentRound]={raceName:r.name,raceType:r.type,top5:[],axelLink:"",entries:{}}; }
-  state.players.forEach(function(p){
-    var e=state.roundLog[state.currentRound].entries[p.name];
-    if(e){ if(!state.seasonHistory[p.name]) state.seasonHistory[p.name]=[]; state.seasonHistory[p.name].push({rider:e.rider,stars:e.stars}); }
-  });
+
+  if(isPending){
+    var pendingEntries={};
+    state.players.forEach(function(p){
+      if(state.picks[p.name]){
+        pendingEntries[p.name]={
+          rider: state.picks[p.name],
+          stars: state.starRatings[p.name]!=null ? state.starRatings[p.name] : null,
+          points: 0,
+          log: "Afventer resultat"
+        };
+      }
+    });
+    state.roundLog[rNum]={
+      raceName: r.name, raceType: r.type,
+      top5: [], axelLink: preview ? preview.axelLink : "",
+      entries: pendingEntries, pending: true
+    };
+    // Add to seasonHistory immediately — limits count straight away
+    state.players.forEach(function(p){
+      var e=state.roundLog[rNum].entries[p.name];
+      if(e){
+        if(!state.seasonHistory[p.name]) state.seasonHistory[p.name]=[];
+        state.seasonHistory[p.name].push({rider:e.rider, stars:e.stars, roundNum:rNum});
+      }
+    });
+  } else {
+    if(preview){ state.roundLog[rNum]=preview; delete state.roundLog["preview"]; }
+    else{ state.roundLog[rNum]={raceName:r.name,raceType:r.type,top5:[],axelLink:"",entries:{}}; }
+    state.players.forEach(function(p){
+      var e=state.roundLog[rNum].entries[p.name];
+      if(e){
+        if(!state.seasonHistory[p.name]) state.seasonHistory[p.name]=[];
+        state.seasonHistory[p.name].push({rider:e.rider, stars:e.stars, roundNum:rNum});
+      }
+    });
+  }
+
   state.currentRound++; state.currentPickIndex=0;
   state.picks={}; state.starRatings={}; state.picksLocked=false; state.lockTimestamp=null; editingPlayer=null;
   if(countdownInterval) clearInterval(countdownInterval);
@@ -835,65 +883,170 @@ $("next-round-btn").addEventListener("click",function(){
   gmFields.forEach(function(f){ f.clear(); });
   recalcTotalPoints(); state.players.sort(function(a,b){ return b.points-a.points; });
   buildRoundOrder(); saveState(); renderAll(); switchTab("player");
-});
+}
 
 function recalcTotalPoints(){
   state.players.forEach(function(p){
     p.points=Object.keys(state.roundLog).filter(function(k){ return k!=="preview"; }).reduce(function(s,k){
-      return s+(state.roundLog[k].entries[p.name]?state.roundLog[k].entries[p.name].points:0);
+      var entry=state.roundLog[k].entries[p.name];
+      if(!entry || state.roundLog[k].pending) return s; // pending = 0 point indtil løst
+      return s+entry.points;
     },0);
   });
 }
 
-// === HISTORIK ===
+// === RESOLVE PENDING – called from GM pending section ===
+function resolvePendingRound(rNum){
+  var top5inputs=document.querySelectorAll('.pending-top5-input[data-round="'+rNum+'"]');
+  var starInputs=document.querySelectorAll('.pending-star-input[data-round="'+rNum+'"]');
+  var newTop5=Array.from(top5inputs).map(function(i){ return i.value.trim().toLowerCase(); });
+  var round=state.roundLog[rNum];
+
+  var baseEntries={};
+  Object.entries(round.entries).forEach(function(kv){
+    baseEntries[kv[0]]={rider:kv[1].rider, stars:kv[1].stars};
+  });
+  starInputs.forEach(function(sel){
+    var pName=sel.dataset.player;
+    if(baseEntries[pName]) baseEntries[pName].stars=sel.value===""?null:parseInt(sel.value);
+  });
+
+  var recomputed=calcRoundPoints(newTop5,baseEntries,round.raceType);
+  state.roundLog[rNum]=Object.assign({},round,{top5:newTop5, entries:recomputed, pending:false});
+
+  // Update seasonHistory for this round (remove pending, update stars)
+  state.players.forEach(function(p){
+    var hist=state.seasonHistory[p.name]||[];
+    var idx=-1;
+    for(var i=0;i<hist.length;i++){ if(hist[i].roundNum===rNum){ idx=i; break; } }
+    var ne=recomputed[p.name];
+    if(idx>=0){
+      hist[idx]={rider:hist[idx].rider, stars:ne?ne.stars:hist[idx].stars, roundNum:rNum};
+    } else if(ne){
+      hist.push({rider:ne.rider, stars:ne.stars, roundNum:rNum});
+    }
+    state.seasonHistory[p.name]=hist;
+  });
+
+  recalcTotalPoints(); state.players.sort(function(a,b){ return b.points-a.points; });
+  saveState();
+  renderAll();
+  if(isGM) renderGmTab();
+  alert("✅ Runde "+rNum+" løst! Point er nu beregnet og stillingen opdateret.");
+}
+
+// === GM PENDING PANEL ===
+function renderGmPending(){
+  var pending=pendingRounds();
+  var section=$("gm-pending-section");
+  if(!pending.length){ section.style.display="none"; return; }
+  section.style.display="block";
+  var list=$("gm-pending-list");
+  list.innerHTML=pending.map(function(rNum){
+    var r=state.roundLog[rNum];
+    var tl={normal:"",monument:"🏛️ ",grandtour:"🏔️ "}[r.raceType]||"";
+    var starOpts='<option value="">– Ikke tildelt –</option>'+
+      '<option value="5">⭐⭐⭐⭐⭐ (−1)</option>'+
+      '<option value="4">⭐⭐⭐⭐ (0)</option>'+
+      '<option value="3">⭐⭐⭐ (0)</option>'+
+      '<option value="2">⭐⭐ (+1)</option>'+
+      '<option value="1">⭐ (+2)</option>'+
+      '<option value="0">Ikke nævnt (+3)</option>';
+    return '<div class="pending-result-item">'+
+      '<h4>'+tl+r.raceName+' <span style="font-size:0.8rem;color:var(--muted)">(Runde '+rNum+')</span></h4>'+
+      '<p style="font-size:0.84rem;color:var(--muted);margin-bottom:10px">'+
+        Object.entries(r.entries).map(function(kv){ return '<strong>'+kv[0]+'</strong>: '+kv[1].rider; }).join(' · ')+
+      '</p>'+
+      '<button class="btn pending small" onclick="togglePendingResolve('+rNum+')">🕐 Udfyld resultat</button>'+
+      '<div class="pending-resolve-panel" id="pending-panel-'+rNum+'">'+
+        '<p style="font-size:0.84rem;font-weight:600;color:var(--pending);margin-bottom:10px">Top 5 for '+r.raceName+'</p>'+
+        [1,2,3,4,5].map(function(i){
+          return '<div class="result-row"><label>'+["🥇","🥈","🥉","4.","5."][i-1]+'</label>'+
+            '<input class="pending-top5-input" data-round="'+rNum+'" data-pos="'+(i-1)+'" placeholder="Rytternavn" style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem"></div>';
+        }).join("")+
+        '<p style="font-size:0.84rem;font-weight:600;color:var(--pending);margin:12px 0 8px">Stjerner per spiller</p>'+
+        Object.entries(r.entries).map(function(kv){
+          var pName=kv[0],e=kv[1];
+          return '<div class="result-row" style="margin-bottom:6px">'+
+            '<label style="padding-top:6px">'+pName+'</label>'+
+            '<select class="pending-star-input" data-round="'+rNum+'" data-player="'+pName+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem">'+
+            starOpts.replace('value="'+(e.stars==null?"":e.stars)+'"','value="'+(e.stars==null?"":e.stars)+'" selected')+
+            '</select></div>';
+        }).join("")+
+        '<button class="btn pending" style="margin-top:10px" onclick="resolvePendingRound('+rNum+')">✅ Bekræft resultat & beregn point</button>'+
+      '</div>'+
+    '</div>';
+  }).join("");
+}
+
+function togglePendingResolve(rNum){
+  var panel=$("pending-panel-"+rNum);
+  if(panel) panel.classList.toggle("open");
+}
+
+// === HISTORIK (read-only for pending, editable for done) ===
 function renderHistory(){
   var container=$("history-list");
   var rounds=Object.keys(state.roundLog).filter(function(k){ return k!=="preview"; }).map(Number).sort(function(a,b){ return a-b; });
   if(!rounds.length){ container.innerHTML='<p style="color:var(--muted)">Ingen afsluttede runder endnu.</p>'; return; }
   container.innerHTML=rounds.map(function(rNum){
     var r=state.roundLog[rNum];
-    var totalPts=Object.values(r.entries).reduce(function(s,e){ return s+e.points; },0);
+    var isPending=!!r.pending;
+    var totalPts=isPending?0:Object.values(r.entries).reduce(function(s,e){ return s+e.points; },0);
     var tl={normal:"",monument:"🏛️",grandtour:"🏔️"}[r.raceType]||"";
-    return '<div class="history-round">'+
+    var statusBadge=isPending?
+      '<span class="status-badge pending">🕐 Afventer</span>':
+      '<span class="status-badge done">✅ Afsluttet</span>';
+
+    var editPanel=!isPending?
+      '<div class="history-edit-panel" id="history-edit-'+rNum+'">'+
+        '<h4 style="margin-bottom:12px">✏️ Ret runde '+rNum+'</h4>'+
+        [1,2,3,4,5].map(function(i){
+          return '<div class="result-row"><label>'+["🥇","🥈","🥉","4.","5."][i-1]+' plads</label>'+
+            '<input class="history-top5-input" data-round="'+rNum+'" data-pos="'+(i-1)+'" placeholder="Rytternavn" value="'+(r.top5[i-1]||"")+'" style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem"></div>';
+        }).join("")+
+        '<h4 style="margin:12px 0 8px">Stjerner per rytter</h4>'+
+        Object.entries(r.entries).map(function(kv){
+          var pName=kv[0],e=kv[1];
+          return '<div class="result-row" style="margin-bottom:6px"><label style="padding-top:6px">'+pName+'</label>'+
+            '<select class="history-star-input" data-round="'+rNum+'" data-player="'+pName+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem">'+
+            '<option value="" '+(e.stars==null?"selected":"")+'>– Ikke tildelt –</option>'+
+            '<option value="5" '+(e.stars===5?"selected":"")+'>⭐⭐⭐⭐⭐ (−1)</option>'+
+            '<option value="4" '+(e.stars===4?"selected":"")+'>⭐⭐⭐⭐ (0)</option>'+
+            '<option value="3" '+(e.stars===3?"selected":"")+'>⭐⭐⭐ (0)</option>'+
+            '<option value="2" '+(e.stars===2?"selected":"")+'>⭐⭐ (+1)</option>'+
+            '<option value="1" '+(e.stars===1?"selected":"")+'>⭐ (+2)</option>'+
+            '<option value="0" '+(e.stars===0?"selected":"")+'>Ikke nævnt (+3)</option>'+
+            '</select></div>';
+        }).join("")+
+        '<button class="btn warning" style="margin-top:10px" onclick="recalcHistoryRound('+rNum+')">🔄 Genberegn runde '+rNum+'</button>'+
+      '</div>'
+      : '<p style="font-size:0.82rem;color:var(--pending);margin-top:10px">Udfyld resultatet fra GM-fanens "Afventende resultater"-sektion.</p>';
+
+    return '<div class="history-round'+(isPending?" pending-round":"")+'">'+
       '<div class="history-round-header" onclick="toggleHistory('+rNum+')">'+
-        '<span><strong>Runde '+rNum+'</strong> – '+r.raceName+' '+tl+'</span>'+
-        '<span style="font-size:0.82rem;color:var(--muted)">'+totalPts+' pt ▾</span>'+
+        '<span><strong>Runde '+rNum+'</strong> – '+r.raceName+' '+tl+' '+statusBadge+'</span>'+
+        '<span style="font-size:0.82rem;color:var(--muted)">'+(isPending?"–":totalPts+' pt')+' ▾</span>'+
       '</div>'+
       '<div class="history-round-body" id="history-body-'+rNum+'">'+
         (r.axelLink?'<p style="margin-bottom:10px;font-size:0.88rem">📎 <a href="'+r.axelLink+'" target="_blank" style="color:var(--primary);word-break:break-all">'+r.axelLink+'</a></p>':'')+
         '<table><thead><tr><th style="width:22%">Spiller</th><th style="width:22%">Rytter</th><th style="width:10%">Pt</th><th>Detaljer</th></tr></thead><tbody>'+
         Object.entries(r.entries).map(function(kv){
-          return '<tr><td><strong>'+kv[0]+'</strong></td><td>'+kv[1].rider+'</td><td>'+kv[1].points+'</td><td style="font-size:0.78rem;color:var(--muted)">'+kv[1].log.replace(/<strong>|<\/strong>/g,"")+'</td></tr>';
+          return '<tr><td><strong>'+kv[0]+'</strong></td><td>'+kv[1].rider+'</td>'+
+            '<td>'+(isPending?'<span style="color:var(--pending)">?</span>':kv[1].points)+'</td>'+
+            '<td style="font-size:0.78rem;color:var(--muted)">'+kv[1].log.replace(/<strong>|<\/strong>/g,"")+'</td></tr>';
         }).join("")+
         '</tbody></table>'+
-        '<button class="btn warning small" style="margin-top:12px" onclick="openHistoryEdit('+rNum+')">✏️ Ret denne runde</button>'+
-        '<div class="history-edit-panel" id="history-edit-'+rNum+'">'+
-          '<h4 style="margin-bottom:12px">✏️ Ret runde '+rNum+'</h4>'+
-          [1,2,3,4,5].map(function(i){
-            return '<div class="result-row"><label>'+["🥇","🥈","🥉","4.","5."][i-1]+' plads</label>'+
-              '<input class="history-top5-input" data-round="'+rNum+'" data-pos="'+(i-1)+'" placeholder="Rytternavn" value="'+(r.top5[i-1]||"")+'" style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem"></div>';
-          }).join("")+
-          '<h4 style="margin:12px 0 8px">Stjerner per rytter</h4>'+
-          Object.entries(r.entries).map(function(kv){
-            var pName=kv[0],e=kv[1];
-            return '<div class="result-row" style="margin-bottom:6px"><label style="padding-top:6px">'+pName+'</label>'+
-              '<select class="history-star-input" data-round="'+rNum+'" data-player="'+pName+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem">'+
-              '<option value="" '+(e.stars==null?"selected":"")+'>– Ikke tildelt –</option>'+
-              '<option value="5" '+(e.stars===5?"selected":"")+'>⭐⭐⭐⭐⭐ (−1)</option>'+
-              '<option value="4" '+(e.stars===4?"selected":"")+'>⭐⭐⭐⭐ (0)</option>'+
-              '<option value="3" '+(e.stars===3?"selected":"")+'>⭐⭐⭐ (0)</option>'+
-              '<option value="2" '+(e.stars===2?"selected":"")+'>⭐⭐ (+1)</option>'+
-              '<option value="1" '+(e.stars===1?"selected":"")+'>⭐ (+2)</option>'+
-              '<option value="0" '+(e.stars===0?"selected":"")+'>Ikke nævnt (+3)</option>'+
-              '</select></div>';
-          }).join("")+
-          '<button class="btn warning" style="margin-top:10px" onclick="recalcHistoryRound('+rNum+')">🔄 Genberegn runde '+rNum+'</button>'+
-        '</div>'+
-      '</div></div>';
+        (!isPending?'<button class="btn warning small" style="margin-top:12px" onclick="openHistoryEdit('+rNum+')">✏️ Ret denne runde</button>':'')+
+        editPanel+
+      '</div>'+
+    '</div>';
   }).join("");
 }
+
 function toggleHistory(rNum){ $("history-body-"+rNum).classList.toggle("open"); }
 function openHistoryEdit(rNum){ $("history-edit-"+rNum).classList.toggle("open"); }
+
 function recalcHistoryRound(rNum){
   var top5inputs=document.querySelectorAll('.history-top5-input[data-round="'+rNum+'"]');
   var starInputs=document.querySelectorAll('.history-star-input[data-round="'+rNum+'"]');
@@ -913,7 +1066,7 @@ function recalcHistoryRound(rNum){
     if(!state.seasonHistory[p.name]) state.seasonHistory[p.name]=[];
     state.seasonHistory[p.name].splice(rIdx,1);
     var ne=recomputed[p.name];
-    if(ne) state.seasonHistory[p.name].splice(rIdx,0,{rider:ne.rider,stars:ne.stars});
+    if(ne) state.seasonHistory[p.name].splice(rIdx,0,{rider:ne.rider,stars:ne.stars,roundNum:rNum});
   });
   recalcTotalPoints(); state.players.sort(function(a,b){ return b.points-a.points; });
   saveState(); renderStandings(); renderLimitsTable(); renderLimitsStandings(); renderHistory();
@@ -922,32 +1075,28 @@ function recalcHistoryRound(rNum){
 
 // === RENDER ===
 function renderAll(){
-  updateRaceDisplay();
-  renderOrder();
-  renderPickBox();
-  renderPicksList();
-  renderStandings();
-  renderMiniStandings();
-  updateProgressBar();
-  if($("tab-gm").classList.contains("active") && isGM){
-    renderStarTable();
-    renderLimitsTable();
-    renderHistory();
+  updateRaceDisplay(); renderOrder(); renderPickBox(); renderPicksList();
+  renderStandings(); renderMiniStandings(); updateProgressBar(); renderPendingBanner();
+  if($("tab-gm").classList.contains("active")&&isGM){ renderStarTable(); renderLimitsTable(); renderHistory(); renderGmPending(); }
+  if($("tab-standings").classList.contains("active")){ renderLimitsStandings(); }
+  if($("tab-calendar").classList.contains("active")){ renderCalendar(); }
+  if($("tab-stats").classList.contains("active")){ renderStats(); }
+}
+
+function renderPendingBanner(){
+  var pending=pendingRounds();
+  var banner=$("pending-banner");
+  if(!pending.length){ banner.style.display="none"; } else {
+    banner.style.display="flex";
+    $("pending-count-badge").textContent=pending.length;
+    $("pending-banner-names").textContent=pending.map(function(rNum){ return state.roundLog[rNum].raceName; }).join(", ");
   }
-  if($("tab-standings").classList.contains("active")){
-    renderLimitsStandings();
-  }
-  if($("tab-calendar").classList.contains("active")){
-    renderCalendar();
-  }
-  if($("tab-stats").classList.contains("active")){
-    renderStats();
-  }
+  var note=$("standings-pending-note");
+  if(note) note.style.display=pending.length?"block":"none";
 }
 
 function renderMiniStandings(){
-  var medals=["🥇","🥈","🥉","4","5","6"];
-  var rowClass=["gold","silver","bronze","","",""];
+  var medals=["🥇","🥈","🥉","4","5","6"],rowClass=["gold","silver","bronze","","",""];
   var leader=state.players.length?state.players[0].points:0;
   var el=$("mini-standings"); if(!el) return;
   el.innerHTML=state.players.map(function(p,i){
@@ -959,13 +1108,13 @@ function renderMiniStandings(){
 
 function updateProgressBar(){
   var pct=Math.round(((state.currentRound-1)/RACES.length)*100);
-  var bar=$("prog-bar"), label=$("prog-label");
+  var bar=$("prog-bar"),label=$("prog-label");
   if(bar) bar.style.width=pct+"%";
   if(label) label.textContent="Løb "+state.currentRound+" af "+RACES.length;
 }
 
 function updateRaceDisplay(){
-  var r=currentRace(), isDouble=r.type==="monument"||r.type==="grandtour";
+  var r=currentRace(),isDouble=r.type==="monument"||r.type==="grandtour";
   function set(id,val){ var el=$(id); if(el) el.textContent=val; }
   set("display-race-name",r.name); set("display-race-type",typeLabel[r.type]);
   set("display-race-date",r.date); set("display-double",isDouble?"⚡ Dobbeltpoint!":"Normal");
@@ -976,15 +1125,21 @@ function updateRaceDisplay(){
 
 function renderCalendar(){
   var container=$("calendar-list"); if(!container) return;
+  var pendingNums=pendingRounds();
   container.innerHTML=RACES.map(function(r,i){
-    var rNum=i+1,done=rNum<state.currentRound,active=rNum===state.currentRound;
-    return '<div class="race-item '+(done?"completed":"")+" "+(active?"current":"")+'">'+'<span class="race-num">'+rNum+'</span><span class="race-date">'+r.date+'</span><span class="race-name">'+r.name+'</span><span class="race-badge '+(done?"badge-done":typeBadge[r.type])+'">'+(done?"✅":typeBadgeLabel[r.type])+'</span></div>';
+    var rNum=i+1;
+    var isPending=pendingNums.indexOf(rNum)>=0;
+    var done=rNum<state.currentRound&&!isPending;
+    var active=rNum===state.currentRound;
+    var cls="race-item"+(done?" completed":"")+(isPending?" pending-race":"")+(active?" current":"");
+    var badge=done?"badge-done":isPending?"badge-pending":typeBadge[r.type];
+    var badgeLabel=done?"✅":isPending?"🕐 Afventer":typeBadgeLabel[r.type];
+    return '<div class="'+cls+'"><span class="race-num">'+rNum+'</span><span class="race-date">'+r.date+'</span><span class="race-name">'+r.name+'</span><span class="race-badge '+badge+'">'+badgeLabel+'</span></div>';
   }).join("");
 }
 
 function renderStandings(){
-  var medals=["🥇","🥈","🥉","4","5","6"];
-  var rowClass=["gold","silver","bronze","","",""];
+  var medals=["🥇","🥈","🥉","4","5","6"],rowClass=["gold","silver","bronze","","",""];
   var leader=state.players.length?state.players[0].points:0;
   var el=$("standings-body-full"); if(!el) return;
   el.innerHTML=state.players.map(function(p,i){
@@ -1023,13 +1178,11 @@ function renderPickBox(){
     box.innerHTML='<p style="color:var(--success);font-weight:700;font-size:1rem">✅ Alle har valgt rytter!</p>'; return;
   }
   if(!roundOrder.length) return;
-  // Rebuild pick box HTML if it was replaced
   if(!$("active-name")){
     box.innerHTML='<div class="turn-label">Det er <span class="turn-name" id="active-name"></span>\'s tur!</div>'+
       '<div class="ac-wrap"><input type="text" id="search-input" placeholder="Søg efter rytter..." autocomplete="off"><ul class="ac-list" id="suggestions" style="display:none"></ul></div>'+
       '<button class="btn" id="confirm-btn">✅ Bekræft valg</button><p class="error" id="error-msg"></p>';
-    // Re-bind autocomplete and confirm button
-    playerAC = setupAutocomplete($("search-input"),$("suggestions"),{
+    playerAC=setupAutocomplete($("search-input"),$("suggestions"),{
       takenCheck:function(r){ return Object.entries(state.picks).some(function(e){ return e[1]===r&&e[0]!==editingPlayer; }); },
       blockedCheck:function(r){
         if(!state.players||!roundOrder.length) return false;
@@ -1083,140 +1236,55 @@ function renderStarTable(){
 function setStars(playerName,val){
   var stars=val===""?null:parseInt(val);
   if(stars===5&&fiveStarUsedCount(playerName)>=5){ alert("⛔ "+playerName+" har allerede brugt 5-stjerne 5 gange."); renderStarTable(); return; }
-  state.starRatings[playerName]=stars;
-  saveState();
-  renderLimitsTable();
-  renderLimitsStandings();
+  state.starRatings[playerName]=stars; saveState(); renderLimitsTable(); renderLimitsStandings();
 }
 
-// === STATS & CHARTS ===
-var PLAYER_COLORS = {
-  "Emil":      "#2D6A4F",
-  "Christian": "#52B788",
-  "Dennis":    "#E8B800",
-  "Mathias":   "#C0392B",
-  "Anders":    "#1A6AAD",
-  "Tobias":    "#8E44AD"
-};
-
-var chartInstances = {};
-
-function destroyChart(id){
-  if(chartInstances[id]){ chartInstances[id].destroy(); delete chartInstances[id]; }
-}
+var PLAYER_COLORS={"Emil":"#2D6A4F","Christian":"#52B788","Dennis":"#E8B800","Mathias":"#C0392B","Anders":"#1A6AAD","Tobias":"#8E44AD"};
+var chartInstances={};
+function destroyChart(id){ if(chartInstances[id]){ chartInstances[id].destroy(); delete chartInstances[id]; } }
 
 function renderStats(){
-  var rounds = Object.keys(state.roundLog)
-    .filter(function(k){ return k!=="preview"; })
-    .map(Number).sort(function(a,b){ return a-b; });
-
+  // Only use completed (non-pending) rounds for charts
+  var rounds=Object.keys(state.roundLog).filter(function(k){ return k!=="preview"&&!state.roundLog[k].pending; }).map(Number).sort(function(a,b){ return a-b; });
   if(!rounds.length){
     ["chart-progress","chart-form","chart-hitrate"].forEach(function(id){
       destroyChart(id);
-      var canvas=$(id); if(!canvas) return;
-      var ctx=canvas.getContext("2d");
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+      var c=$(id); if(c){ c.getContext("2d").clearRect(0,0,c.width,c.height); }
     });
     $("hitrate-details").innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">Ingen data endnu – afslut første runde for at se statistik 🚴</p>';
     return;
   }
-
-  // --- POINTUDVIKLING ---
   destroyChart("chart-progress");
-  var labels = rounds.map(function(r){ return state.roundLog[r].raceName.length>15?state.roundLog[r].raceName.substring(0,15)+"…":state.roundLog[r].raceName; });
-  var progressDatasets = PLAYERS_ORDER.map(function(name){
-    var cumul=0;
-    var data=rounds.map(function(r){
-      var e=state.roundLog[r].entries[name];
-      cumul+=(e?e.points:0);
-      return cumul;
-    });
-    return { label:name, data:data, borderColor:PLAYER_COLORS[name], backgroundColor:PLAYER_COLORS[name]+"22", tension:0.3, fill:false, pointRadius:4, pointHoverRadius:6, borderWidth:2.5 };
-  });
-  chartInstances["chart-progress"] = new Chart($("chart-progress"), {
-    type:"line",
-    data:{ labels:labels, datasets:progressDatasets },
-    options:{
-      responsive:true, maintainAspectRatio:true,
-      plugins:{ legend:{ position:"bottom", labels:{ boxWidth:12, font:{size:11} } } },
-      scales:{
-        x:{ ticks:{ font:{size:10}, maxRotation:45 } },
-        y:{ beginAtZero:true, ticks:{ font:{size:11} }, title:{ display:true, text:"Point", font:{size:11} } }
-      }
-    }
-  });
+  var labels=rounds.map(function(r){ var n=state.roundLog[r].raceName; return n.length>15?n.substring(0,15)+"…":n; });
+  chartInstances["chart-progress"]=new Chart($("chart-progress"),{type:"line",data:{labels:labels,datasets:PLAYERS_ORDER.map(function(name){
+    var cumul=0,data=rounds.map(function(r){ var e=state.roundLog[r].entries[name]; cumul+=(e?e.points:0); return cumul; });
+    return {label:name,data:data,borderColor:PLAYER_COLORS[name],backgroundColor:PLAYER_COLORS[name]+"22",tension:0.3,fill:false,pointRadius:4,pointHoverRadius:6,borderWidth:2.5};
+  })},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom",labels:{boxWidth:12,font:{size:11}}}},scales:{x:{ticks:{font:{size:10},maxRotation:45}},y:{beginAtZero:true,ticks:{font:{size:11}},title:{display:true,text:"Point",font:{size:11}}}}}});
 
-  // --- FORM (sidste 5 løb) ---
   destroyChart("chart-form");
-  var last5 = rounds.slice(-5);
-  var formLabels = last5.map(function(r){ var n=state.roundLog[r].raceName; return n.length>12?n.substring(0,12)+"…":n; });
-  var formDatasets = PLAYERS_ORDER.map(function(name){
-    var data=last5.map(function(r){
-      var e=state.roundLog[r].entries[name];
-      return e?e.points:0;
-    });
-    return { label:name, data:data, backgroundColor:PLAYER_COLORS[name]+"cc", borderColor:PLAYER_COLORS[name], borderWidth:1.5, borderRadius:6 };
-  });
-  chartInstances["chart-form"] = new Chart($("chart-form"), {
-    type:"bar",
-    data:{ labels:formLabels, datasets:formDatasets },
-    options:{
-      responsive:true, maintainAspectRatio:true,
-      plugins:{ legend:{ position:"bottom", labels:{ boxWidth:12, font:{size:11} } } },
-      scales:{
-        x:{ ticks:{ font:{size:10} } },
-        y:{ beginAtZero:true, ticks:{ font:{size:11} }, title:{ display:true, text:"Point", font:{size:11} } }
-      }
-    }
-  });
+  var last5=rounds.slice(-5);
+  var fLabels=last5.map(function(r){ var n=state.roundLog[r].raceName; return n.length>12?n.substring(0,12)+"…":n; });
+  chartInstances["chart-form"]=new Chart($("chart-form"),{type:"bar",data:{labels:fLabels,datasets:PLAYERS_ORDER.map(function(name){
+    return {label:name,data:last5.map(function(r){ var e=state.roundLog[r].entries[name]; return e?e.points:0; }),backgroundColor:PLAYER_COLORS[name]+"cc",borderColor:PLAYER_COLORS[name],borderWidth:1.5,borderRadius:6};
+  })},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom",labels:{boxWidth:12,font:{size:11}}}},scales:{x:{ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{font:{size:11}},title:{display:true,text:"Point",font:{size:11}}}}}});
 
-  // --- HITRATE ---
   destroyChart("chart-hitrate");
-  var hitrateData = PLAYERS_ORDER.map(function(name){
-    var total=rounds.length;
-    var hits=rounds.filter(function(r){ var e=state.roundLog[r].entries[name]; return e&&e.points>0; }).length;
-    return total>0?Math.round((hits/total)*100):0;
-  });
-  chartInstances["chart-hitrate"] = new Chart($("chart-hitrate"), {
-    type:"bar",
-    data:{
-      labels:PLAYERS_ORDER,
-      datasets:[{ label:"Hitrate %", data:hitrateData,
-        backgroundColor:PLAYERS_ORDER.map(function(n){ return PLAYER_COLORS[n]+"cc"; }),
-        borderColor:PLAYERS_ORDER.map(function(n){ return PLAYER_COLORS[n]; }),
-        borderWidth:1.5, borderRadius:8
-      }]
-    },
-    options:{
-      indexAxis:"y", responsive:true, maintainAspectRatio:true,
-      plugins:{ legend:{ display:false } },
-      scales:{
-        x:{ min:0, max:100, ticks:{ callback:function(v){ return v+"%"; }, font:{size:11} } },
-        y:{ ticks:{ font:{size:12, weight:"bold"} } }
-      }
-    }
-  });
+  var hrData=PLAYERS_ORDER.map(function(name){ var t=rounds.length,h=rounds.filter(function(r){ var e=state.roundLog[r].entries[name]; return e&&e.points>0; }).length; return t>0?Math.round((h/t)*100):0; });
+  chartInstances["chart-hitrate"]=new Chart($("chart-hitrate"),{type:"bar",data:{labels:PLAYERS_ORDER,datasets:[{label:"Hitrate %",data:hrData,backgroundColor:PLAYERS_ORDER.map(function(n){ return PLAYER_COLORS[n]+"cc"; }),borderColor:PLAYERS_ORDER.map(function(n){ return PLAYER_COLORS[n]; }),borderWidth:1.5,borderRadius:8}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{x:{min:0,max:100,ticks:{callback:function(v){ return v+"%"; },font:{size:11}}},y:{ticks:{font:{size:12,weight:"bold"}}}}}});
 
-  // Hitrate detaljer
-  var details = PLAYERS_ORDER.map(function(name){
-    var total=rounds.length;
-    var hits=rounds.filter(function(r){ var e=state.roundLog[r].entries[name]; return e&&e.points>0; }).length;
-    var totalPts=rounds.reduce(function(s,r){ var e=state.roundLog[r].entries[name]; return s+(e?e.points:0); },0);
-    var avg=total>0?(totalPts/total).toFixed(1):0;
+  $("hitrate-details").innerHTML=PLAYERS_ORDER.map(function(name){
+    var t=rounds.length,h=rounds.filter(function(r){ var e=state.roundLog[r].entries[name]; return e&&e.points>0; }).length;
+    var tp=rounds.reduce(function(s,r){ var e=state.roundLog[r].entries[name]; return s+(e?e.points:0); },0);
     return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg);border:1px solid var(--border)">'+
       '<span style="font-weight:700;color:'+PLAYER_COLORS[name]+'">'+name+'</span>'+
-      '<span style="font-size:0.85rem;color:var(--muted)">'+hits+'/'+total+' løb med point</span>'+
-      '<span style="font-size:0.85rem;color:var(--muted)">Snit: <strong>'+avg+' pt</strong></span>'+
-      '</div>';
+      '<span style="font-size:0.85rem;color:var(--muted)">'+h+'/'+t+' løb med point</span>'+
+      '<span style="font-size:0.85rem;color:var(--muted)">Snit: <strong>'+(t>0?(tp/t).toFixed(1):0)+' pt</strong></span>'+
+    '</div>';
   }).join("");
-  $("hitrate-details").innerHTML=details;
 }
 
-// === START ===
 setStatus("syncing","Forbinder til Firebase…");
-buildRoundOrder();
-renderAll();
-subscribeToState();
+buildRoundOrder(); renderAll(); subscribeToState();
 </script>
 </body>
 </html>
