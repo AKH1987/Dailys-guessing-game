@@ -178,8 +178,7 @@
 </div>
 
 <div class="app-header" style="padding:0;overflow:hidden;position:relative;min-height:80px">
-  <!-- SVG logo as background left side -->
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" style="height:80px;width:auto;flex-shrink:0;display:block">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 80" preserveAspectRatio="xMidYMid slice" style="width:100%;height:80px;display:block">
     <defs>
       <linearGradient id="hBg" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#0f1923"/>
@@ -205,52 +204,52 @@
       </filter>
     </defs>
     <!-- Background -->
-    <rect width="320" height="80" fill="url(#hBg)"/>
+    <rect width="600" height="80" fill="url(#hBg)"/>
     <!-- VM stripe bottom -->
-    <rect x="0" y="73" width="320" height="7" fill="url(#hStripes)"/>
-    <!-- Mountain silhouette -->
-    <polygon points="10,68 50,28 90,55 120,20 160,45 190,15 230,38 260,10 300,28 320,20 320,68" fill="#1e3a4a" opacity="0.5"/>
+    <rect x="0" y="73" width="600" height="7" fill="url(#hStripes)"/>
+    <!-- Mountain silhouette background -->
+    <polygon points="0,68 60,25 120,50 200,15 280,45 350,10 430,35 500,5 580,25 600,18 600,68" fill="#1e3a4a" opacity="0.45"/>
     <!-- Main mountain -->
-    <polygon points="40,68 90,18 140,68" fill="#2a4a5e"/>
-    <polygon points="78,30 90,18 102,30 97,33 90,26 83,33" fill="#f0f4f8" opacity="0.9"/>
-    <!-- Bicycle -->
+    <polygon points="60,68 130,14 200,68" fill="#2a4a5e"/>
+    <polygon points="116,28 130,14 144,28 138,32 130,22 122,32" fill="#f0f4f8" opacity="0.9"/>
+    <!-- Bicycle — centred between text and progress -->
     <!-- Rear wheel -->
-    <circle cx="168" cy="54" r="14" fill="none" stroke="#f0a500" stroke-width="1.5"/>
-    <circle cx="168" cy="54" r="2" fill="#f0a500"/>
-    <line x1="168" y1="40" x2="168" y2="68" stroke="#f0a500" stroke-width="0.7" opacity="0.6"/>
-    <line x1="154" y1="54" x2="182" y2="54" stroke="#f0a500" stroke-width="0.7" opacity="0.6"/>
-    <line x1="158" y1="44" x2="178" y2="64" stroke="#f0a500" stroke-width="0.7" opacity="0.5"/>
-    <line x1="158" y1="64" x2="178" y2="44" stroke="#f0a500" stroke-width="0.7" opacity="0.5"/>
+    <circle cx="290" cy="50" r="18" fill="none" stroke="#f0a500" stroke-width="1.8"/>
+    <circle cx="290" cy="50" r="2.5" fill="#f0a500"/>
+    <line x1="290" y1="32" x2="290" y2="68" stroke="#f0a500" stroke-width="0.8" opacity="0.6"/>
+    <line x1="272" y1="50" x2="308" y2="50" stroke="#f0a500" stroke-width="0.8" opacity="0.6"/>
+    <line x1="277" y1="37" x2="303" y2="63" stroke="#f0a500" stroke-width="0.8" opacity="0.5"/>
+    <line x1="277" y1="63" x2="303" y2="37" stroke="#f0a500" stroke-width="0.8" opacity="0.5"/>
     <!-- Front wheel -->
-    <circle cx="210" cy="54" r="14" fill="none" stroke="#f0a500" stroke-width="1.5"/>
-    <circle cx="210" cy="54" r="2" fill="#f0a500"/>
-    <line x1="210" y1="40" x2="210" y2="68" stroke="#f0a500" stroke-width="0.7" opacity="0.6"/>
-    <line x1="196" y1="54" x2="224" y2="54" stroke="#f0a500" stroke-width="0.7" opacity="0.6"/>
-    <line x1="200" y1="44" x2="220" y2="64" stroke="#f0a500" stroke-width="0.7" opacity="0.5"/>
-    <line x1="200" y1="64" x2="220" y2="44" stroke="#f0a500" stroke-width="0.7" opacity="0.5"/>
+    <circle cx="346" cy="50" r="18" fill="none" stroke="#f0a500" stroke-width="1.8"/>
+    <circle cx="346" cy="50" r="2.5" fill="#f0a500"/>
+    <line x1="346" y1="32" x2="346" y2="68" stroke="#f0a500" stroke-width="0.8" opacity="0.6"/>
+    <line x1="328" y1="50" x2="364" y2="50" stroke="#f0a500" stroke-width="0.8" opacity="0.6"/>
+    <line x1="333" y1="37" x2="359" y2="63" stroke="#f0a500" stroke-width="0.8" opacity="0.5"/>
+    <line x1="333" y1="63" x2="359" y2="37" stroke="#f0a500" stroke-width="0.8" opacity="0.5"/>
     <!-- Frame -->
-    <line x1="181" y1="54" x2="180" y2="34" stroke="#e63030" stroke-width="1.8" stroke-linecap="round"/>
-    <line x1="180" y1="34" x2="200" y2="34" stroke="#e8e8e8" stroke-width="1.8" stroke-linecap="round"/>
-    <line x1="200" y1="34" x2="181" y2="54" stroke="#e8e8e8" stroke-width="1.8" stroke-linecap="round"/>
-    <line x1="181" y1="54" x2="168" y2="54" stroke="#e8e8e8" stroke-width="1.8" stroke-linecap="round"/>
-    <line x1="180" y1="34" x2="168" y2="54" stroke="#e8e8e8" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="200" y1="34" x2="210" y2="54" stroke="#e8e8e8" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="200" y1="31" x2="202" y2="38" stroke="#e8e8e8" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M200,31 Q204,28 208,29 Q210,31 209,35" fill="none" stroke="#e8e8e8" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="180" y1="34" x2="179" y2="27" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M174,26 Q179,23 185,25" fill="none" stroke="#f0a500" stroke-width="1.8" stroke-linecap="round"/>
-    <circle cx="181" cy="54" r="3.5" fill="none" stroke="#f0a500" stroke-width="1.5"/>
+    <line x1="308" y1="50" x2="306" y2="28" stroke="#e63030" stroke-width="2" stroke-linecap="round"/>
+    <line x1="306" y1="28" x2="330" y2="28" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="330" y1="28" x2="308" y2="50" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="308" y1="50" x2="290" y2="50" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="306" y1="28" x2="290" y2="50" stroke="#e8e8e8" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="330" y1="28" x2="346" y2="50" stroke="#e8e8e8" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="330" y1="24" x2="332" y2="32" stroke="#e8e8e8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M330,24 Q335,20 340,22 Q342,25 341,29" fill="none" stroke="#e8e8e8" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="306" y1="28" x2="305" y2="19" stroke="#aaa" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M299,18 Q305,14 312,16" fill="none" stroke="#f0a500" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="308" cy="50" r="4.5" fill="none" stroke="#f0a500" stroke-width="1.8"/>
     <!-- PELOTON text -->
-    <text x="8" y="44" font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="700" letter-spacing="1.5" fill="#f5f5f5" filter="url(#hGlow)">PELOTON</text>
+    <text x="12" y="42" font-family="Georgia,'Times New Roman',serif" font-size="24" font-weight="700" letter-spacing="2" fill="#f5f5f5" filter="url(#hGlow)">PELOTON</text>
     <!-- FANTASY text -->
-    <text x="10" y="64" font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="400" font-style="italic" letter-spacing="4" fill="#f0a500" filter="url(#hGlow)">FANTASY</text>
+    <text x="14" y="63" font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="400" font-style="italic" letter-spacing="5" fill="#f0a500" filter="url(#hGlow)">FANTASY</text>
+    <!-- Progress label -->
+    <text id="prog-label-svg" x="588" y="38" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#52B788" text-anchor="end">Løb 1 af 54</text>
+    <!-- Progress bar track -->
+    <rect x="430" y="46" width="158" height="6" rx="3" fill="rgba(255,255,255,0.15)"/>
+    <!-- Progress bar fill -->
+    <rect id="prog-bar-svg" x="430" y="46" width="0" height="6" rx="3" fill="#E8B800"/>
   </svg>
-
-  <!-- Progress bar area -->
-  <div class="season-progress" style="padding:16px 20px;text-align:right;display:flex;flex-direction:column;align-items:flex-end;justify-content:center">
-    <div class="prog-label" id="prog-label">Løb 1 af 54</div>
-    <div class="prog-bar-wrap"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
-  </div>
 </div>
 
 <div class="status-bar">
@@ -1358,9 +1357,16 @@ function renderMiniStandings(){
 
 function updateProgressBar(){
   var pct=Math.round(((state.currentRound-1)/RACES.length)*100);
+  var labelText="Løb "+state.currentRound+" af "+RACES.length;
+  // SVG progress bar (full-width header)
+  var svgBar=document.getElementById("prog-bar-svg");
+  var svgLabel=document.getElementById("prog-label-svg");
+  if(svgBar)svgBar.setAttribute("width",(pct*1.58).toFixed(1));
+  if(svgLabel)svgLabel.textContent=labelText;
+  // Fallback for old HTML elements if present
   var bar=$("prog-bar"),label=$("prog-label");
   if(bar)bar.style.width=pct+"%";
-  if(label)label.textContent="Løb "+state.currentRound+" af "+RACES.length;
+  if(label)label.textContent=labelText;
 }
 
 function updateRaceDisplay(){
