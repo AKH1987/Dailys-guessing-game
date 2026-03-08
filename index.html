@@ -1211,19 +1211,28 @@ function renderHistory(){
           return '<div class="result-row"><label>'+["🥇","🥈","🥉","4.","5."][i]+' plads</label>'+
             '<input class="history-top5-input" data-round="'+rNum+'" data-pos="'+i+'" placeholder="Rytternavn" value="'+(r.top5[i]||"")+'" style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem"></div>';
         }).join("")+
-        '<h4 style="margin:12px 0 8px">Stjerner per rytter</h4>'+
+        '<h4 style="margin:12px 0 8px">Ryttervalg og stjerner</h4>'+
         Object.entries(r.entries).map(function(kv){
           var pName=kv[0],e=kv[1];
-          return '<div class="result-row" style="margin-bottom:6px"><label style="padding-top:6px">'+pName+'</label>'+
-            '<select class="history-star-input" data-round="'+rNum+'" data-player="'+pName+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem">'+
-            '<option value="" '+(e.stars==null?"selected":"")+'>– Ikke tildelt –</option>'+
-            '<option value="5" '+(e.stars===5?"selected":"")+'>⭐⭐⭐⭐⭐ (−1)</option>'+
-            '<option value="4" '+(e.stars===4?"selected":"")+'>⭐⭐⭐⭐ (0)</option>'+
-            '<option value="3" '+(e.stars===3?"selected":"")+'>⭐⭐⭐ (0)</option>'+
-            '<option value="2" '+(e.stars===2?"selected":"")+'>⭐⭐ (+1)</option>'+
-            '<option value="1" '+(e.stars===1?"selected":"")+'>⭐ (+2)</option>'+
-            '<option value="0" '+(e.stars===0?"selected":"")+'>Ikke nævnt (+3)</option>'+
-            '</select></div>';
+          return '<div style="margin-bottom:10px;padding:8px;background:var(--bg);border-radius:8px">'+
+            '<div style="font-weight:700;font-size:0.85rem;margin-bottom:6px">'+pName+'</div>'+
+            '<div class="result-row" style="margin-bottom:4px">'+
+              '<label style="padding-top:8px;font-size:0.8rem;color:var(--muted)">Rytter</label>'+
+              '<input class="history-rider-input" data-round="'+rNum+'" data-player="'+pName+'" value="'+e.rider+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem"/>'+
+            '</div>'+
+            '<div class="result-row">'+
+              '<label style="padding-top:6px;font-size:0.8rem;color:var(--muted)">Stjerner</label>'+
+              '<select class="history-star-input" data-round="'+rNum+'" data-player="'+pName+'" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem">'+
+              '<option value="" '+(e.stars==null?"selected":"")+'>– Ikke tildelt –</option>'+
+              '<option value="5" '+(e.stars===5?"selected":"")+'>⭐⭐⭐⭐⭐ (−1)</option>'+
+              '<option value="4" '+(e.stars===4?"selected":"")+'>⭐⭐⭐⭐ (0)</option>'+
+              '<option value="3" '+(e.stars===3?"selected":"")+'>⭐⭐⭐ (0)</option>'+
+              '<option value="2" '+(e.stars===2?"selected":"")+'>⭐⭐ (+1)</option>'+
+              '<option value="1" '+(e.stars===1?"selected":"")+'>⭐ (+2)</option>'+
+              '<option value="0" '+(e.stars===0?"selected":"")+'>Ikke nævnt (+3)</option>'+
+              '</select>'+
+            '</div>'+
+          '</div>';
         }).join("")+
         '<button class="btn warning" style="margin-top:10px" onclick="recalcHistoryRound('+rNum+')">🔄 Genberegn runde '+rNum+'</button>'+
       '</div>'
@@ -1254,10 +1263,15 @@ function openHistoryEdit(rNum){$("history-edit-"+rNum).classList.toggle("open");
 function recalcHistoryRound(rNum){
   var top5inputs=document.querySelectorAll('.history-top5-input[data-round="'+rNum+'"]');
   var starInputs=document.querySelectorAll('.history-star-input[data-round="'+rNum+'"]');
+  var riderInputs=document.querySelectorAll('.history-rider-input[data-round="'+rNum+'"]');
   var newTop5=Array.from(top5inputs).map(function(i){return i.value.trim().toLowerCase();});
   var round=state.roundLog[rNum];
   var baseEntries={};
   Object.entries(round.entries).forEach(function(kv){baseEntries[kv[0]]={rider:kv[1].rider,stars:kv[1].stars};});
+  riderInputs.forEach(function(inp){
+    var pName=inp.dataset.player;
+    if(baseEntries[pName]&&inp.value.trim())baseEntries[pName].rider=inp.value.trim();
+  });
   starInputs.forEach(function(sel){
     var pName=sel.dataset.player;
     if(baseEntries[pName])baseEntries[pName].stars=sel.value===""?null:parseInt(sel.value);
