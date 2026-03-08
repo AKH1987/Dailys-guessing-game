@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dennis' Cykelspil 2026</title>
+  <title>🚴 Peloton Fantasy 2026</title>
   <style>
     :root {
       --primary:#2D6A4F;--primary-light:#52B788;--primary-dark:#1B4332;
@@ -153,6 +153,15 @@
     .fav-box{background:var(--pending-bg);border:2px solid var(--pending);border-radius:12px;padding:14px;margin-bottom:12px}
     @media(max-width:480px){body{padding:8px}.app-header h1{font-size:1.1rem}th,td{padding:7px 8px;font-size:0.82rem}.tab{font-size:0.7rem;padding:8px 3px}.prog-bar-wrap{width:80px}}
   </style>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "cbd10123-98a3-41ad-ab4d-d96b49be7991",
+      });
+    });
+  </script>
 </head>
 <body>
 
@@ -170,7 +179,7 @@
 
 <div class="app-header">
   <div>
-    <h1>🚴 Daily's gætteleg 2026</h1>
+    <h1>🚴 Peloton Fantasy 2026</h1>
     <div class="subtitle">Cykelspil – 54 løb/etaper</div>
   </div>
   <div class="season-progress">
@@ -203,6 +212,7 @@
     </div>
     <div class="pending-count" id="pending-count-badge">0</div>
   </div>
+  <div id="pending-picks-section" style="display:none"></div>
   <section>
     <h2>🏆 Stilling</h2>
     <table>
@@ -273,6 +283,14 @@
   </section>
 </div>
 
+<!-- SPILLER DETALJE MODAL -->
+<div id="player-detail-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;overflow-y:auto" onclick="if(event.target===this)closePlayerModal()">
+  <div style="background:white;border-radius:20px;margin:40px auto;max-width:480px;width:92%;padding:20px;position:relative">
+    <button onclick="closePlayerModal()" style="position:absolute;top:14px;right:14px;background:var(--border);border:none;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;line-height:32px">✕</button>
+    <div id="player-detail-content"></div>
+  </div>
+</div>
+
 <!-- STATS -->
 <div class="tab-content" id="tab-stats">
   <section>
@@ -307,11 +325,14 @@
   <section><h2>🎯 Formål</h2><p style="line-height:1.7">55 løb/etaper. Én rytter pr. løb. Ingen kan vælge samme rytter. Rækkefølgen er fastlagt via lodtrækning og roterer hvert løb.</p></section>
   <section>
     <h2>🔄 Valgrækkefølge</h2>
-    <table><thead><tr><th style="width:30%">Runde</th><th>Rækkefølge</th></tr></thead><tbody>
-      <tr><td>Runde 1</td><td>Emil → Christian → Dennis → Mathias → Anders → Tobias</td></tr>
-      <tr><td>Runde 2</td><td>Christian → Dennis → Mathias → Anders → Tobias → Emil</td></tr>
-      <tr><td>Runde 3</td><td>Dennis → Mathias → Anders → Tobias → Emil → Christian</td></tr>
-      <tr><td colspan="2" style="color:var(--muted);font-size:0.85rem">…og så videre</td></tr>
+    <p style="line-height:1.7;margin-bottom:10px">Rækkefølgen er fastlagt for hvert løb individuelt, så alle har første valg på præcis 9 løb — og dobbeltpoint-løb er fordelt balanceret.</p>
+    <table><thead><tr><th style="width:30%">Spiller</th><th>Første vælger (total)</th><th>heraf ⚡ dobbelt</th></tr></thead><tbody>
+      <tr><td>Emil</td><td>9</td><td>3</td></tr>
+      <tr><td>Christian</td><td>9</td><td>3</td></tr>
+      <tr><td>Dennis</td><td>9</td><td>3</td></tr>
+      <tr><td>Mathias</td><td>9</td><td>3</td></tr>
+      <tr><td>Anders</td><td>9</td><td>2</td></tr>
+      <tr><td>Tobias</td><td>9</td><td>3</td></tr>
     </tbody></table>
   </section>
   <section>
@@ -354,6 +375,24 @@
     <strong style="color:var(--danger)">GM-tilstand aktiv</strong>
     <button class="btn danger small" style="margin-left:auto;margin-top:0" onclick="gmLogout()">Log ud</button>
   </div>
+
+  <!-- Push notifikationer -->
+  <section style="margin-bottom:14px">
+    <h2>🔔 Send påmindelse</h2>
+    <p class="star-hint" style="margin-bottom:10px">Send en push-notifikation til alle spillere der har tilladt notifikationer.</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <input id="push-title" type="text" placeholder="Titel (fx: ⏰ Husk dit valg!)"
+        style="padding:10px 12px;border:2px solid var(--border);border-radius:12px;font-size:0.9rem;font-family:inherit"/>
+      <textarea id="push-body" placeholder="Besked (fx: Paris–Roubaix starter om 2 dage – vælg din rytter nu!)"
+        style="padding:10px 12px;border:2px solid var(--border);border-radius:12px;font-size:0.9rem;font-family:inherit;resize:vertical;min-height:70px"></textarea>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn small" onclick="sendPushNotification()" style="background:var(--pending);margin-top:0">📤 Send til alle</button>
+        <button class="btn small secondary" onclick="prefillPush()" style="margin-top:0">⚡ Næste løb</button>
+      </div>
+      <p id="push-status" style="font-size:0.82rem;color:var(--muted);display:none"></p>
+    </div>
+  </section>
+
   <div id="gm-pending-section" style="display:none">
     <div class="pending-result-section">
       <h3>🕐 Afventende resultater</h3>
@@ -517,10 +556,65 @@ function pendingRounds(){
 }
 
 var PLAYERS_ORDER=["Emil","Christian","Dennis","Mathias","Anders","Tobias"];
+var RACE_ORDERS=[
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Christian","Dennis","Mathias","Anders","Tobias","Emil"],
+  ["Dennis","Mathias","Anders","Tobias","Emil","Christian"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Anders","Tobias","Emil","Christian","Dennis","Mathias"],
+  ["Tobias","Emil","Christian","Dennis","Mathias","Anders"],
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Emil","Mathias","Anders","Tobias","Christian","Dennis"],
+  ["Christian","Dennis","Mathias","Anders","Tobias","Emil"],
+  ["Dennis","Mathias","Anders","Tobias","Emil","Christian"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Anders","Tobias","Emil","Christian","Dennis","Mathias"],
+  ["Tobias","Emil","Christian","Dennis","Mathias","Anders"],
+  ["Christian","Mathias","Anders","Tobias","Emil","Dennis"],
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Christian","Dennis","Mathias","Anders","Tobias","Emil"],
+  ["Dennis","Tobias","Emil","Christian","Mathias","Anders"],
+  ["Dennis","Mathias","Anders","Tobias","Emil","Christian"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Mathias","Christian","Dennis","Anders","Tobias","Emil"],
+  ["Anders","Tobias","Emil","Christian","Dennis","Mathias"],
+  ["Tobias","Emil","Christian","Dennis","Mathias","Anders"],
+  ["Tobias","Mathias","Anders","Emil","Christian","Dennis"],
+  ["Dennis","Anders","Tobias","Emil","Christian","Mathias"],
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Mathias","Tobias","Emil","Christian","Dennis","Anders"],
+  ["Christian","Dennis","Mathias","Anders","Tobias","Emil"],
+  ["Anders","Emil","Christian","Dennis","Mathias","Tobias"],
+  ["Dennis","Mathias","Anders","Tobias","Emil","Christian"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Anders","Tobias","Emil","Christian","Dennis","Mathias"],
+  ["Emil","Anders","Tobias","Christian","Dennis","Mathias"],
+  ["Tobias","Mathias","Anders","Emil","Christian","Dennis"],
+  ["Dennis","Anders","Tobias","Emil","Christian","Mathias"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Tobias","Emil","Christian","Dennis","Mathias","Anders"],
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Christian","Dennis","Mathias","Anders","Tobias","Emil"],
+  ["Dennis","Mathias","Anders","Tobias","Emil","Christian"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Christian","Anders","Tobias","Emil","Dennis","Mathias"],
+  ["Anders","Mathias","Tobias","Emil","Christian","Dennis"],
+  ["Anders","Tobias","Emil","Christian","Dennis","Mathias"],
+  ["Christian","Tobias","Emil","Dennis","Mathias","Anders"],
+  ["Tobias","Emil","Christian","Dennis","Mathias","Anders"],
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Emil","Christian","Dennis","Mathias","Anders","Tobias"],
+  ["Christian","Dennis","Mathias","Anders","Tobias","Emil"],
+  ["Dennis","Mathias","Anders","Tobias","Emil","Christian"],
+  ["Mathias","Anders","Tobias","Emil","Christian","Dennis"],
+  ["Anders","Tobias","Emil","Christian","Dennis","Mathias"],
+  ["Tobias","Emil","Christian","Dennis","Mathias","Anders"],
+  ["Tobias","Christian","Dennis","Mathias","Anders","Emil"],
+  ["Anders","Emil","Christian","Dennis","Mathias","Tobias"]
+];
 function buildRoundOrder(){
-  var si=(state.currentRound-1)%PLAYERS_ORDER.length;
-  roundOrder=PLAYERS_ORDER.map(function(_,i){
-    var name=PLAYERS_ORDER[(si+i)%PLAYERS_ORDER.length];
+  var orderNames=RACE_ORDERS[state.currentRound-1]||PLAYERS_ORDER;
+  roundOrder=orderNames.map(function(name){
     return state.players.find(function(p){return p.name===name;})||{name:name,points:0};
   });
 }
@@ -573,6 +667,36 @@ function verifyGmCode(){
 }
 function closeGmOverlay(){$("gm-overlay").style.display="none";switchTab("player");}
 function gmLogout(){isGM=false;switchTab("player");}
+
+function prefillPush(){
+  var r=currentRace();
+  $("push-title").value="⏰ Husk dit ryttervalg!";
+  $("push-body").value="Næste løb: "+r.name+" ("+r.date+") – vælg din rytter nu på Peloton Fantasy!";
+}
+
+async function sendPushNotification(){
+  var title=$("push-title").value.trim();
+  var body=$("push-body").value.trim();
+  var status=$("push-status");
+  if(!title||!body){status.style.display="block";status.style.color="var(--danger)";status.textContent="⚠️ Udfyld både titel og besked.";return;}
+  status.style.display="block";status.style.color="var(--muted)";status.textContent="Sender…";
+  try{
+    var resp=await fetch("https://onesignal.com/api/v1/notifications",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Basic os_v2_app_zpiqci4yuna23k2n3fvutptzsgr2uqbb5axe52v5bxbwoqz4j4qfzmd6pylswtvjwsigtuuetxkrl7xdvo25kkrp2hhrcwoo66xgftq"},
+      body:JSON.stringify({
+        app_id:"cbd10123-98a3-41ad-ab4d-d96b49be7991",
+        included_segments:["Total Subscriptions"],
+        headings:{en:title,da:title},
+        contents:{en:body,da:body},
+        url:"https://akh1987.github.io/Cykelspil/"
+      })
+    });
+    var data=await resp.json();
+    if(data.id){status.style.color="var(--success)";status.textContent="✅ Sendt til "+( data.recipients||"alle")+" spillere!";}
+    else{status.style.color="var(--danger)";status.textContent="❌ Fejl: "+(data.errors?data.errors[0]:"Ukendt fejl. Tjek REST API key.");}
+  }catch(e){status.style.color="var(--danger)";status.textContent="❌ Netværksfejl: "+e.message;}
+}
 
 function switchTab(tab){
   document.querySelectorAll(".tab-content").forEach(function(el){el.classList.remove("active");});
@@ -1098,11 +1222,35 @@ function renderAll(){
 function renderPendingBanner(){
   var pending=pendingRounds();
   var banner=$("pending-banner");
-  if(!pending.length){banner.style.display="none";}
-  else{
+  var picksSection=$("pending-picks-section");
+  if(!pending.length){
+    banner.style.display="none";
+    if(picksSection)picksSection.style.display="none";
+  } else {
     banner.style.display="flex";
     $("pending-count-badge").textContent=pending.length;
     $("pending-banner-names").textContent=pending.map(function(rNum){return state.roundLog[rNum].raceName;}).join(", ");
+    if(picksSection){
+      picksSection.style.display="block";
+      picksSection.innerHTML=pending.map(function(rNum){
+        var log=state.roundLog[rNum];
+        var entries=log.entries||{};
+        var isDouble=log.raceType==="monument"||log.raceType==="grandtour";
+        var typeIcon=log.raceType==="monument"?"🏛️ ":log.raceType==="grandtour"?"🏔️ ":"🏁 ";
+        var items=PLAYERS_ORDER.map(function(name){
+          var e=entries[name];
+          if(!e)return "";
+          var starStr=e.stars!=null?" "+"⭐".repeat(e.stars):"";
+          var top8badge=isTop8(e.rider)?" 🌟":"";
+          return "<li style='padding:5px 0;border-bottom:1px solid rgba(123,47,190,0.15);font-size:0.9rem'><strong>"+name+"</strong> → "+e.rider+top8badge+starStr+"</li>";
+        }).join("");
+        var doubleTag=isDouble?" <span style='font-size:0.72rem;background:var(--pending);color:white;border-radius:10px;padding:2px 8px;vertical-align:middle'>⚡ Dobbelt</span>":"";
+        return "<section style='border:2px solid var(--pending);background:var(--pending-bg)'>"
+          +"<h2 style='color:var(--pending)'>"+typeIcon+log.raceName+doubleTag+"</h2>"
+          +"<ul style='list-style:none;padding:0;margin:0'>"+items+"</ul>"
+          +"</section>";
+      }).join("");
+    }
   }
   var note=$("standings-pending-note");
   if(note)note.style.display=pending.length?"block":"none";
@@ -1147,7 +1295,8 @@ function renderCalendar(){
     var cls="race-item"+(done?" completed":"")+(isPending?" pending-race":"")+(active?" current":"");
     var badge=done?"badge-done":isPending?"badge-pending":typeBadge[r.type];
     var badgeLabel=done?"✅":isPending?"🕐 Afventer":typeBadgeLabel[r.type];
-    return '<div class="'+cls+'"><span class="race-num">'+rNum+'</span><span class="race-date">'+r.date+'</span><span class="race-name">'+r.name+'</span><span class="race-badge '+badge+'">'+badgeLabel+'</span></div>';
+    var firstPicker=(RACE_ORDERS[rNum-1]||PLAYERS_ORDER)[0];
+    return '<div class="'+cls+'"><span class="race-num">'+rNum+'</span><span class="race-date">'+r.date+'</span><span class="race-name">'+r.name+'</span><span style="font-size:0.72rem;color:var(--muted);flex-shrink:0">1. '+firstPicker+'</span><span class="race-badge '+badge+'">'+badgeLabel+'</span></div>';
   }).join("");
 }
 
@@ -1157,9 +1306,44 @@ function renderStandings(){
   var el=$("standings-body-full");if(!el)return;
   el.innerHTML=state.players.map(function(p,i){
     var diff=i===0?"":"-"+(leader-p.points)+" pt";
-    return '<tr class="standings-row '+(rowClass[i]||'')+'"><td>'+medals[i]+'</td><td><strong>'+p.name+'</strong></td>'+
+    return '<tr class="standings-row '+(rowClass[i]||'')+'"><td>'+medals[i]+'</td>'+
+      '<td><strong style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;color:var(--primary-dark)" onclick="openPlayerModal(\''+p.name+'\')">'+p.name+'</strong></td>'+
       '<td><span class="points-pill">'+p.points+'</span><span class="points-diff">'+diff+'</span></td></tr>';
   }).join("");
+}
+
+function openPlayerModal(name){
+  var history=(state.seasonHistory[name]||[]);
+  var top8picks=history.filter(function(e){return isTop8(e.rider);});
+  var fiveStar=history.filter(function(e){return e.stars===5;});
+
+  var top8rows=top8picks.length
+    ? top8picks.map(function(e){return "<li style='padding:4px 0;border-bottom:1px solid var(--border);font-size:0.88rem'>🌟 <strong>"+e.rider+"</strong> – "+e.raceName+"</li>";}).join("")
+    : "<li style='color:var(--muted);font-size:0.88rem;padding:4px 0'>Ingen endnu</li>";
+
+  var fiveStarRows=fiveStar.length
+    ? fiveStar.map(function(e){return "<li style='padding:4px 0;border-bottom:1px solid var(--border);font-size:0.88rem'>⭐⭐⭐⭐⭐ <strong>"+e.rider+"</strong> – "+e.raceName+"</li>";}).join("")
+    : "<li style='color:var(--muted);font-size:0.88rem;padding:4px 0'>Ingen endnu</li>";
+
+  var t8=top8picks.length, fs=fiveStar.length;
+  $("player-detail-content").innerHTML=
+    "<h2 style='margin-bottom:4px'>"+name+"</h2>"
+    +"<p style='font-size:0.82rem;color:var(--muted);margin-bottom:16px'>Klik på et navn for at lukke</p>"
+    +"<div style='margin-bottom:16px'>"
+    +"<h3 style='font-size:0.95rem;margin-bottom:8px;color:var(--primary-dark)'>🌟 Top-8 valg ("+t8+"/4)</h3>"
+    +"<ul style='list-style:none;padding:0;margin:0'>"+top8rows+"</ul>"
+    +"</div>"
+    +"<div>"
+    +"<h3 style='font-size:0.95rem;margin-bottom:8px;color:var(--primary-dark)'>⭐⭐⭐⭐⭐ 5-stjernede valg ("+fs+"/5)</h3>"
+    +"<ul style='list-style:none;padding:0;margin:0'>"+fiveStarRows+"</ul>"
+    +"</div>";
+  $("player-detail-modal").style.display="block";
+  document.body.style.overflow="hidden";
+}
+
+function closePlayerModal(){
+  $("player-detail-modal").style.display="none";
+  document.body.style.overflow="";
 }
 
 function limitsHTML(bodyId){
