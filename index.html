@@ -761,7 +761,7 @@ async function sendPushNotification(){
     // Bruger OneSignal REST API via en CORS-proxy for at undgå browser-blokering
     var resp=await fetch("https://corsproxy.io/?https://onesignal.com/api/v1/notifications",{
       method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Basic os_v2_app_zpiqci4yuna23k2n3fvutptzsgr2uqbb5axe52v5bxbwoqz4j4qfzmd6pylswtvjwsigtuuetxkrl7xdvo25kkrp2hhrcwoo66xgftq"},
+      headers:{"Content-Type":"application/json","Authorization":"Basic os_v2_app_zpiqci4yuna23k2n3fvutptzsh6iirba2gvevreiuyd2k7zk22c3i5eqtyhrtptbos3idwt2sbkftbh7rkjmyazweegf2bt73tnpedi"},
       body:JSON.stringify({
         app_id:"cbd10123-98a3-41ad-ab4d-d96b49be7991",
         included_segments:["Total Subscriptions"],
