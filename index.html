@@ -781,7 +781,7 @@ async function scheduleReminder(){
 }
 
 async function loadReminders(){
-  var container=$("reminder-list"); if(!container)return;
+  var container=document.getElementById("reminder-list"); if(!container)return;
   var snap=await firebase.database().ref("reminders").once("value");
   if(!snap.exists()){container.innerHTML="";return;}
   var reminders=snap.val();
@@ -792,15 +792,16 @@ async function loadReminders(){
     if(r.sent)return;
     found=true;
     var dt=new Date(r.sendAt).toLocaleString("da-DK");
-    html+="<div style='display:flex;align-items:center;justify-content:space-between;background:var(--accent-bg);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:0.85rem'>"+
-      "<div><strong>"+r.title+"</strong><br><span style='color:var(--muted)'>"+dt+"</span></div>"+
-      "<button class='btn danger small' onclick='deleteReminder("'"+key+"")'  style='margin-top:0'>🗑️</button></div>";
+    html+="<div style='display:flex;align-items:center;justify-content:space-between;background:var(--accent-bg);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:0.85rem'>";
+    html+="<div><strong>"+r.title+"</strong><br><span style='color:var(--muted)'>"+dt+"</span></div>";
+    html+="<button class='btn danger small' onclick='deleteReminder(this)' data-key='"+key+"' style='margin-top:0'>🗑️</button></div>";
   });
   if(!found)html+="<p style='color:var(--muted);font-size:0.82rem'>Ingen planlagte reminders.</p>";
   container.innerHTML=html;
 }
 
-async function deleteReminder(key){
+async function deleteReminder(btn){
+  var key=btn.dataset.key;
   if(!confirm("Slet denne reminder?"))return;
   await firebase.database().ref("reminders/"+key).remove();
   loadReminders();
