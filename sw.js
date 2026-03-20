@@ -4,8 +4,8 @@ const CACHE_NAME = 'peloton-fantasy-v1';
 
 // Filer der gemmes lokalt ved installation (app shell)
 const PRECACHE_URLS = [
-  '/Dailys-guessing-game/',
-  '/Dailys-guessing-game/index.html',
+  '/Cykelspil/',
+  '/Cykelspil/index.html',
 ];
 
 // === INSTALLATION ===
