@@ -456,17 +456,29 @@
   <!-- Push notifikationer -->
   <section style="margin-bottom:14px">
     <h2>🔔 Send påmindelse</h2>
-    <p class="star-hint" style="margin-bottom:10px">Send en push-notifikation til alle spillere der har tilladt notifikationer.</p>
+    <p class="star-hint" style="margin-bottom:10px">Send en push-notifikation nu, eller planlæg en til senere.</p>
     <div style="display:flex;flex-direction:column;gap:8px">
       <input id="push-title" type="text" placeholder="Titel (fx: ⏰ Husk dit valg!)"
         style="padding:10px 12px;border:2px solid var(--border);border-radius:12px;font-size:0.9rem;font-family:inherit"/>
       <textarea id="push-body" placeholder="Besked (fx: Paris–Roubaix starter om 2 dage – vælg din rytter nu!)"
         style="padding:10px 12px;border:2px solid var(--border);border-radius:12px;font-size:0.9rem;font-family:inherit;resize:vertical;min-height:70px"></textarea>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn small" onclick="sendPushNotification()" style="background:var(--pending);margin-top:0">📤 Send til alle</button>
+        <button class="btn small" onclick="sendPushNotification()" style="background:var(--pending);margin-top:0">📤 Send nu</button>
         <button class="btn small secondary" onclick="prefillPush()" style="margin-top:0">⚡ Næste løb</button>
       </div>
       <p id="push-status" style="font-size:0.82rem;color:var(--muted);display:none"></p>
+    </div>
+    <!-- Planlagt reminder -->
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <p style="font-size:0.85rem;font-weight:bold;margin-bottom:8px">⏰ Planlæg reminder</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <input id="reminder-datetime" type="datetime-local"
+          style="padding:10px 12px;border:2px solid var(--border);border-radius:12px;font-size:0.9rem;font-family:inherit"/>
+        <button class="btn small" onclick="scheduleReminder()" style="background:var(--success);margin-top:0">📅 Planlæg</button>
+        <p id="reminder-status" style="font-size:0.82rem;color:var(--muted);display:none"></p>
+      </div>
+      <!-- Liste over planlagte reminders -->
+      <div id="reminder-list" style="margin-top:10px"></div>
     </div>
   </section>
 
@@ -745,6 +757,55 @@ function verifyGmCode(){
 function closeGmOverlay(){$("gm-overlay").style.display="none";switchTab("player");}
 function gmLogout(){isGM=false;switchTab("player");}
 
+async function scheduleReminder(){
+  var title=$("push-title").value.trim();
+  var body=$("push-body").value.trim();
+  var dt=$("reminder-datetime").value;
+  var status=$("reminder-status");
+  if(!title||!body){status.style.display="block";status.style.color="var(--danger)";status.textContent="⚠️ Udfyld titel og besked først.";return;}
+  if(!dt){status.style.display="block";status.style.color="var(--danger)";status.textContent="⚠️ Vælg dato og tidspunkt.";return;}
+  var sendAt=new Date(dt).getTime();
+  if(sendAt<=Date.now()){status.style.display="block";status.style.color="var(--danger)";status.textContent="⚠️ Tidspunktet skal være i fremtiden.";return;}
+  status.style.display="block";status.style.color="var(--muted)";status.textContent="Gemmer…";
+  try{
+    var key=firebase.database().ref("reminders").push().key;
+    await firebase.database().ref("reminders/"+key).set({
+      title:title, body:body, sendAt:sendAt, sent:false,
+      createdAt:Date.now()
+    });
+    status.style.color="var(--success)";
+    status.textContent="✅ Reminder planlagt til "+new Date(sendAt).toLocaleString("da-DK")+"!";
+    $("reminder-datetime").value="";
+    loadReminders();
+  }catch(e){status.style.color="var(--danger)";status.textContent="❌ Fejl: "+e.message;}
+}
+
+async function loadReminders(){
+  var container=$("reminder-list"); if(!container)return;
+  var snap=await firebase.database().ref("reminders").once("value");
+  if(!snap.exists()){container.innerHTML="";return;}
+  var reminders=snap.val();
+  var html="<p style='font-size:0.82rem;font-weight:bold;margin-bottom:6px'>Planlagte reminders:</p>";
+  var found=false;
+  Object.entries(reminders).forEach(function(entry){
+    var key=entry[0]; var r=entry[1];
+    if(r.sent)return;
+    found=true;
+    var dt=new Date(r.sendAt).toLocaleString("da-DK");
+    html+="<div style='display:flex;align-items:center;justify-content:space-between;background:var(--accent-bg);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:0.85rem'>"+
+      "<div><strong>"+r.title+"</strong><br><span style='color:var(--muted)'>"+dt+"</span></div>"+
+      "<button class='btn danger small' onclick='deleteReminder("'"+key+"")'  style='margin-top:0'>🗑️</button></div>";
+  });
+  if(!found)html+="<p style='color:var(--muted);font-size:0.82rem'>Ingen planlagte reminders.</p>";
+  container.innerHTML=html;
+}
+
+async function deleteReminder(key){
+  if(!confirm("Slet denne reminder?"))return;
+  await firebase.database().ref("reminders/"+key).remove();
+  loadReminders();
+}
+
 function prefillPush(){
   var r=currentRace();
   $("push-title").value="⏰ Husk dit ryttervalg!";
@@ -790,7 +851,7 @@ function switchTab(tab){
   if(tab==="calendar"){renderCalendar();}
   if(tab==="stats"){renderStats();}
 }
-function renderGmTab(){updateRaceDisplay();renderGmFavorites();renderGmPending();renderStarTable();renderLimitsTable();renderHistory();}
+function renderGmTab(){updateRaceDisplay();renderGmFavorites();renderGmPending();renderStarTable();renderLimitsTable();renderHistory();loadReminders();}
 
 // === AUTOCOMPLETE ===
 function setupAutocomplete(input,ulEl,opts){
