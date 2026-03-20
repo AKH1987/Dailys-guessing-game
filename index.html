@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2D6A4F">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Cykelspil">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>🚴 Peloton Fantasy 2026</title>
   <style>
     :root {
@@ -1575,6 +1583,17 @@ function renderStats(){
 
 setStatus("syncing","Forbinder til Firebase…");
 buildRoundOrder();renderAll();subscribeToState();
+</script>
+
+<script>
+  // Registrér service worker (PWA)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/Dailys-guessing-game/sw.js')
+        .then(reg => console.log('SW registreret:', reg.scope))
+        .catch(err => console.warn('SW fejl:', err));
+    });
+  }
 </script>
 </body>
 </html>
