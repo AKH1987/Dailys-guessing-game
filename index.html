@@ -1589,7 +1589,7 @@ buildRoundOrder();renderAll();subscribeToState();
   // Registrér service worker (PWA)
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/Dailys-guessing-game/sw.js')
+      navigator.serviceWorker.register('/Cykelspil/sw.js')
         .then(reg => console.log('SW registreret:', reg.scope))
         .catch(err => console.warn('SW fejl:', err));
     });
