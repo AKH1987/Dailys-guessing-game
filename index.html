@@ -758,7 +758,8 @@ async function sendPushNotification(){
   if(!title||!body){status.style.display="block";status.style.color="var(--danger)";status.textContent="⚠️ Udfyld både titel og besked.";return;}
   status.style.display="block";status.style.color="var(--muted)";status.textContent="Sender…";
   try{
-    var resp=await fetch("https://onesignal.com/api/v1/notifications",{
+    // Bruger OneSignal REST API via en CORS-proxy for at undgå browser-blokering
+    var resp=await fetch("https://corsproxy.io/?https://onesignal.com/api/v1/notifications",{
       method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Basic os_v2_app_zpiqci4yuna23k2n3fvutptzsgr2uqbb5axe52v5bxbwoqz4j4qfzmd6pylswtvjwsigtuuetxkrl7xdvo25kkrp2hhrcwoo66xgftq"},
       body:JSON.stringify({
@@ -770,8 +771,8 @@ async function sendPushNotification(){
       })
     });
     var data=await resp.json();
-    if(data.id){status.style.color="var(--success)";status.textContent="✅ Sendt til "+( data.recipients||"alle")+" spillere!";}
-    else{status.style.color="var(--danger)";status.textContent="❌ Fejl: "+(data.errors?data.errors[0]:"Ukendt fejl. Tjek REST API key.");}
+    if(data.id){status.style.color="var(--success)";status.textContent="✅ Sendt til "+(data.recipients||"alle")+" spillere!";}
+    else{status.style.color="var(--danger)";status.textContent="❌ Fejl: "+(data.errors?data.errors[0]:"Ukendt fejl.");}
   }catch(e){status.style.color="var(--danger)";status.textContent="❌ Netværksfejl: "+e.message;}
 }
 
