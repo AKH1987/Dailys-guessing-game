@@ -759,7 +759,7 @@ async function sendPushNotification(){
   status.style.display="block";status.style.color="var(--muted)";status.textContent="Sender…";
   try{
     // Bruger OneSignal REST API via en CORS-proxy for at undgå browser-blokering
-    var resp=await fetch("https://corsproxy.io/?https://onesignal.com/api/v1/notifications",{
+    var resp=await fetch("https://corsproxy.io/?url=https%3A%2F%2Fonesignal.com%2Fapi%2Fv1%2Fnotifications",{
       method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Basic os_v2_app_zpiqci4yuna23k2n3fvutptzsh6iirba2gvevreiuyd2k7zk22c3i5eqtyhrtptbos3idwt2sbkftbh7rkjmyazweegf2bt73tnpedi"},
       body:JSON.stringify({
