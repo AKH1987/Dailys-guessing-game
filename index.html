@@ -757,6 +757,27 @@ function verifyGmCode(){
 function closeGmOverlay(){$("gm-overlay").style.display="none";switchTab("player");}
 function gmLogout(){isGM=false;switchTab("player");}
 
+async function sendPickNotification(title, body){
+  try{
+    await fetch("https://corsproxy.io/?url=https%3A%2F%2Fonesignal.com%2Fapi%2Fv1%2Fnotifications",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Basic os_v2_app_zpiqci4yuna23k2n3fvutptzsh6iirba2gvevreiuyd2k7zk22c3i5eqtyhrtptbos3idwt2sbkftbh7rkjmyazweegf2bt73tnpedi"
+      },
+      body:JSON.stringify({
+        app_id:"cbd10123-98a3-41ad-ab4d-d96b49be7991",
+        included_segments:["Total Subscriptions"],
+        headings:{en:title,da:title},
+        contents:{en:body,da:body},
+        url:"https://akh1987.github.io/Cykelspil/"
+      })
+    });
+  }catch(e){
+    console.warn("Notifikation kunne ikke sendes:",e.message);
+  }
+}
+
 async function scheduleReminder(){
   var title=$("push-title").value.trim();
   var body=$("push-body").value.trim();
@@ -1024,6 +1045,24 @@ function handleConfirm(){
   }
   selectedRider=null;err.textContent="";
   saveState();renderPicksList();renderOrder();renderPickBox();
+  // Send notifikation til næste spiller eller alle hvis alle har valgt
+  if(!editingPlayer){
+    var race=currentRace();
+    if(state.currentPickIndex>=state.players.length){
+      // Alle har valgt
+      sendPickNotification(
+        "✅ Alle har valgt rytter!",
+        "Valg til "+race.name+" er nu låst. God fornøjelse! 🚴"
+      );
+    } else {
+      // Næste spiller
+      var nextPlayer=activePlayer().name;
+      sendPickNotification(
+        "🚴 "+nextPlayer+" – det er din tur!",
+        "Vælg din rytter til "+race.name+" ("+race.date+") nu!"
+      );
+    }
+  }
 }
 $("confirm-btn").addEventListener("click",handleConfirm);
 
